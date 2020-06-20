@@ -23,6 +23,12 @@ User.init(
         type: DataTypes.STRING,
         allowNull: false,
     },
+    role: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: ['admin', 'saler'],
+        defaultValue: 'saler',
+    },
     businessName: {
         type: DataTypes.STRING,
         allowNull: false,
