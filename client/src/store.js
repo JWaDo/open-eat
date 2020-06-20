@@ -10,10 +10,10 @@ export const StoreProvider = ({ children }) => {
     // Init all states with memorized values
     const memorizedState = JSON.parse(localStorage.getItem(SESSION_STATE_KEY));
 
-    const initialState = memorizedState || combinedReducer(undefined, {type:'INIT/Context'});
+    const initialState = memorizedState || combinedReducer(undefined, {type: undefined});
     // 
-    const contextValue = useReducer(combinedReducer, initialState, () => combinedReducer(undefined, {type: undefined}), 'store');
-
+    const contextValue = useReducer(combinedReducer, initialState, () => initialState, 'store');
+    //
     useEffect(() => {
         localStorage.setItem(SESSION_STATE_KEY, JSON.stringify(contextValue[0]));
     }, [contextValue]);
