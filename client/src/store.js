@@ -10,7 +10,9 @@ export const StoreProvider = ({ children }) => {
     // Init all states with memorized values
     const memorizedState = JSON.parse(localStorage.getItem(SESSION_STATE_KEY));
 
-    const initialState = memorizedState || combinedReducer(undefined, {type: undefined});
+    const initialState = memorizedState ?  {...combinedReducer(undefined, {type: undefined}), ...memorizedState, } : combinedReducer(undefined, {type: undefined});
+
+    console.log(initialState);
     // 
     const contextValue = useReducer(combinedReducer, initialState, () => initialState, 'store');
     //
