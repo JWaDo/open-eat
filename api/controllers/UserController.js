@@ -71,7 +71,7 @@ UserController.login = (req, res) => {
             lastname: 'Admin',
         });
         // Valid
-        res.status(200).json({ succes: true, token });
+        res.status(200).json({ success: true, token });
     }
 
     User.findOne({ where: { email } })
@@ -95,7 +95,7 @@ UserController.login = (req, res) => {
                 lastname: user.lastname,
             });
             // Valid
-            res.status(200).json({ succes: true, token });
+            res.status(200).json({ success: true, token });
         })
         .catch(err => res.status(400).json({ success: false, error: err }));
 };

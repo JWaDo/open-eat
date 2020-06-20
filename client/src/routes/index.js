@@ -29,6 +29,8 @@ export const navigate = {
         const queryString = '?' + qs.stringify(options.query || {});
         const hashString = options.hash ? '#' + options.hash : '';
 
+        console.log(getRoutePathByName(routeName, params) + queryString + hashString);
+
         return history.push(getRoutePathByName(routeName, params) + queryString + hashString);
     },
     replace: (routeName, params = {}, options = {}) => {
