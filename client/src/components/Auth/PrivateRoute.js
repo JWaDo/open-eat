@@ -7,7 +7,6 @@ function PrivateRoute ({ type, ...props}) {
 
     const [{ user, token }, { confirm }] = useAuth();
     const [confirming, isConfirming] = useState(true);
-    const [confirmed, isConfirmed] = useState(false);
 
     useEffect(() => {
         // Confirm the token before rendering the page

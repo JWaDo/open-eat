@@ -91,6 +91,7 @@ UserController.login = (req, res) => {
         .then(user => {
             const token = JWT.create({
                 type: 'saler',
+                id: user.id,
                 firstname: user.firstname,
                 lastname: user.lastname,
             });
