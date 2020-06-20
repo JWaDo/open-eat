@@ -42,7 +42,7 @@ JWT.verify = async function(req, res, next) {
     }
 }
 
-JWT.authenticated = function(options = {
+JWT.grantedType = function(options = {
     type: undefined,
 }) {
     let token;

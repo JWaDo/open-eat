@@ -1,5 +1,6 @@
 import sequelize from '../../lib/sequelize';
 import { DataTypes, Model } from 'sequelize';
+import bcrypt from 'bcryptjs';
 
 // Generation du model
 class User extends Model {}
@@ -22,12 +23,6 @@ User.init(
     businessSiret: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    role: {
-        type: DataTypes.ENUM,
-        allowNull: false,
-        values: ['admin', 'saler'],
-        defaultValue: 'saler',
     },
     businessName: {
         type: DataTypes.STRING,
@@ -73,5 +68,10 @@ User.init(
     paranoid: true,
   }
 );
+
+User.addHook("beforeCreate", async user => {
+  const salt = await bcrypt.genSalt();
+  user.password = await bcrypt.hash(user.password, salt);
+});
 
 export default User;
