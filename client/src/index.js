@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './theme';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import myCustomTheme from './theme';
 import { StoreProvider } from './store';
 import { StateInspector } from "reinspect"
+
+const theme = createMuiTheme(myCustomTheme);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,12 +20,12 @@ ReactDOM.render(
 
         
         {/* Provider material ui theming */}
-        <ThemeProvider theme={theme}>
+        <MuiThemeProvider theme={theme}>
 
           {/* The entire application */}
           <App />
           
-        </ThemeProvider>
+        </MuiThemeProvider>
         
       </StoreProvider>
 
