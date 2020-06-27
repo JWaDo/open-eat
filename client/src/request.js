@@ -16,9 +16,9 @@ export const request = {
         method: 'POST',
         body: JSON.stringify(params),
         headers: {
-            ...headers,
             'Authorization': 'Bearer ' + getToken(),
             'Content-Type': 'application/json',
+            ...headers,
         },
     }).then(data => data.json()),
     get: (url, params = {}, headers = {}) => fetch(url, {
