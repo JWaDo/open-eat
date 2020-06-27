@@ -7,14 +7,6 @@ function HomePage() {
     return (
         <div>
             HomePage
-            Charles
-            <Button color="primary">Je travaille pas pour moins de 10</Button>
-            <Button color="primary" variant="contained">Je travaille pas pour moins de 10</Button>
-            <Button color="primary" variant="outlined">Je travaille pas pour moins de 10</Button>
-            <Button color="secondary">Je travaille pas pour moins de 10</Button>
-            <Button color="secondary" variant="contained">Je travaille pas pour moins de 10</Button>
-            <Button color="secondary" variant="outlined">Je travaille pas pour moins de 10</Button>
-            <Typography>Charles</Typography>
             <PrivateComponent>
                 <p>
                     Content for user beeing connected, dont care about his type
