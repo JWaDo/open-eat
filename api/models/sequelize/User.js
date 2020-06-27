@@ -61,6 +61,14 @@ User.init(
       allowNull: false,
       defaultValue: false,
     },
+    clientSecret: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    clientToken: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize,

@@ -4,20 +4,44 @@ import { DataTypes, Model } from 'sequelize';
 class Transaction extends Model {}
 
 Transaction.init({
-    state: {
-        type: DataTypes.ENUM(["WAITING", "CANCELLATION", "COMPLETED", "REFUNDED"]),
+    isOperating: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
     basket: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.STRING, 
+        get: function() {
+            return JSON.parse(this.getDataValue('basket'));
+        }, 
+        set: function(val) {
+            return this.setDataValue('basket', JSON.stringify(val));
+        },
         allowNull: false,
+    },
+    user: {
+        type: DataTypes.STRING, 
+        get: function() {
+            return JSON.parse(this.getDataValue('user'));
+        }, 
+        set: function(val) {
+            return this.setDataValue('user', JSON.stringify(val));
+        },
+        allowNull: false,
+    },
+    billingAddress: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    deliveryAddress: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     total: {
         type: DataTypes.FLOAT,
         allowNull: false,
     },
     currency: {
-        type: DataTypes.ENUM(["EURO", "DOLLARS", "LIVRES"]),
+        type: DataTypes.ENUM(["EUR", "USD", "GBP", "CAD", "AUD"]),
         allowNull: false,
     }},
     {

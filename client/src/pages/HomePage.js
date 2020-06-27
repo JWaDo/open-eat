@@ -1,13 +1,12 @@
 import React from 'react'
 import Counter from '../components/CounterExample/Counter'
 import PrivateComponent from '../components/Auth/PrivateComponent'
-import { Typography } from '@material-ui/core'
+import { Typography, Button } from '@material-ui/core'
 
 function HomePage() {
     return (
         <div>
             HomePage
-            <Typography>Charles</Typography>
             <PrivateComponent>
                 <p>
                     Content for user beeing connected, dont care about his type
