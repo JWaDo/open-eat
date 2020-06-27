@@ -1,12 +1,19 @@
 import React from 'react'
 import Counter from '../components/CounterExample/Counter'
 import PrivateComponent from '../components/Auth/PrivateComponent'
-import { Typography } from '@material-ui/core'
+import { Typography, Button } from '@material-ui/core'
 
 function HomePage() {
     return (
         <div>
             HomePage
+            Charles
+            <Button color="primary">Je travaille pas pour moins de 10</Button>
+            <Button color="primary" variant="contained">Je travaille pas pour moins de 10</Button>
+            <Button color="primary" variant="outlined">Je travaille pas pour moins de 10</Button>
+            <Button color="secondary">Je travaille pas pour moins de 10</Button>
+            <Button color="secondary" variant="contained">Je travaille pas pour moins de 10</Button>
+            <Button color="secondary" variant="outlined">Je travaille pas pour moins de 10</Button>
             <Typography>Charles</Typography>
             <PrivateComponent>
                 <p>
