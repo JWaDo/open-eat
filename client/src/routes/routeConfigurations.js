@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Notfound from '../pages/Notfound';
 import HomePage from '../pages/HomePage';
 import DashboardPage from '../pages/DashboardPage';
+import SiteMarchand from '../pages/SiteMarchand';
 import AuthPage from '../pages/AuthPage';
 import EmailValidationPage from '../pages/EmailValidationPage';
 
@@ -37,6 +38,24 @@ export default [
         private: true,
         component: DashboardPage,
     },
+
+    /**
+     **** SITE MARCHAND ****
+     */
+    {
+        name: 'SiteMarchandPage',
+        path: '/site-marchand',
+        exact: true,
+        private: false,
+        component: SiteMarchand,
+    },
+
+     
+
+
+    /**
+     * Not found page
+     */
     {
         name: 'NotFoundPage',
         path: '/404',

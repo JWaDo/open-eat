@@ -10,6 +10,12 @@ export default {
             main: "#E9EFFF",
             contrastText: "#3C5CA5",
         },
-
+    },
+    overrides: {
+        MuiCardMedia: {
+            root: {
+                backgroundSize: 'contain'
+            }
+        }
     }
 };
