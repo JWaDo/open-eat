@@ -1,4 +1,5 @@
 import React from 'react'
+import Basket from '../components/SiteMarchand/Basket';
 
 // /site-marchand/basket --> formulaire de passage order
 
@@ -11,7 +12,7 @@ import React from 'react'
 const SiteMarchand = () => {
     return (
         <div>
-            
+            <Basket />
         </div>
     )
 }

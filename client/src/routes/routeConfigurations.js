@@ -5,6 +5,7 @@ import Notfound from '../pages/Notfound';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import DashboardPage from '../pages/DashboardPage';
+import SiteMarchand from '../pages/SiteMarchand';
 
 // Routes
 export default [
@@ -38,6 +39,21 @@ export default [
         private: true,
         component: DashboardPage,
     },
+
+    /**
+     **** SITE MARCHAND ****
+     */
+    {
+        name: 'SiteMarchandPage',
+        path: '/site-marchand',
+        exact: true,
+        private: false,
+        component: SiteMarchand,
+    },
+
+     
+
+
     /**
      * Not found page
      */
