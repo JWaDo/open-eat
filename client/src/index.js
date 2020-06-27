@@ -7,6 +7,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import myCustomTheme from './theme';
 import { StoreProvider } from './store';
 import { StateInspector } from "reinspect"
+import { SnackbarProvider } from 'notistack';
 
 const theme = createMuiTheme(myCustomTheme);
 
@@ -18,15 +19,19 @@ ReactDOM.render(
     {/* Provider for store */}
       <StoreProvider>
 
-        
-        {/* Provider material ui theming */}
-        <MuiThemeProvider theme={theme}>
+        {/*  Provider for snackbar display ('notistack')  */}
+        <SnackbarProvider maxSnack={1} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
 
-          {/* The entire application */}
-          <App />
-          
-        </MuiThemeProvider>
+          {/* Provider material ui theming */}
+          <MuiThemeProvider theme={theme}>
+
+            {/* The entire application */}
+            <App />
+            
+          </MuiThemeProvider>
         
+        </SnackbarProvider>
+
       </StoreProvider>
 
     </StateInspector>

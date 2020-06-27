@@ -1,7 +1,6 @@
 import React from 'react'
 import Counter from '../components/CounterExample/Counter'
-import PrivateComponent from '../components/Auth/PrivateComponent'
-import { Typography, Button } from '@material-ui/core'
+import PrivateComponent from '../components/BO/Auth/PrivateComponent'
 
 function HomePage() {
     return (

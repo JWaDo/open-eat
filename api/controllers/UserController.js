@@ -1,7 +1,9 @@
 import User from '../models/sequelize/User';
+import Mailer from '../services/mailer';
 import { ValidationError } from 'sequelize';
 import JWT from '../services/jwt';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 class UserController {};
 
@@ -42,10 +44,31 @@ UserController.put = (req, res) => {
 
 UserController.register = (req, res) => {
     try {
-        User.create(req.body).then((data) => {
+        User.create(req.body).then((user) => {
+            // Create a token for confirmation
+            const validationToken = JWT.create({
+                type: 'confirmation_account',
+                user: {
+                    id: user.id,
+                    email: user.email,
+                },
+            }, { expiresIn: '24h' });
+            // Send mail
+            const validationURL = `http://localhost:3000/account/confirm/${validationToken}`; // Root URL should be in config file in order to handle dev/prod mode
+            Mailer.send({
+                to: user.email,
+                subject: 'Confirm your email to finish!',
+                html: `Welcome! Please validate your email: <a href="${validationURL}">Validate my email</a>`,
+            }, (err, info) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(`Mail has been sent: ${validationURL}`);
+                }
+            });
             return res.status(201).json({
                 success: true,
-                user: data,
+                user: user,
             });
         });
     } catch (error) {
@@ -89,8 +112,10 @@ UserController.login = (req, res) => {
             }
         })
         .then(user => {
+            if (!user.confirmed) return Promise.reject('Please, validate your account.');
             const token = JWT.create({
                 type: 'saler',
+                id: user.id,
                 firstname: user.firstname,
                 lastname: user.lastname,
             });
@@ -99,5 +124,34 @@ UserController.login = (req, res) => {
         })
         .catch(err => res.status(400).json({ success: false, error: err }));
 };
+
+UserController.confirmAccount = (req, res) => {
+    const { token } = req.body;
+
+    const payload = jwt.verify(token, JWT.SECRET_KEY);
+
+    if (payload.type === 'confirmation_account') {
+        User.findOne({ where: { id: payload.user.id } }).then(user => {
+            if (!user) {
+                return res.status(400).json({ success: false, error: 'No user found' });
+            } else {
+                // We should mark user as Confirmed and also generateFor him some credentials
+
+                if (user.confirmed) return res.status(400).json({ success: false, error: 'Already valid' });
+                
+                user
+                    .set('confirmed', true)
+                    .set('clientSecret', `secret_${hashCode('CLIENT_SECRET_' + user.email + Date())}`)
+                    .set('clientToken', `token_${hashCode('CLIENT_TOKEN_' + user.email + Date())}`)
+                .save();
+
+                res.status(200).json({ success: true });
+            }
+        }).catch(err => res.status(400).json({ success: false, error: err }))
+    }
+
+};
+
+const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
 
 export default UserController;

@@ -4,6 +4,10 @@ import { DataTypes, Model } from 'sequelize';
 class Transaction extends Model {}
 
 Transaction.init({
+    status: {
+        type: DataTypes.ENUM(["CONFIRMED", "CANCELED"]),
+        allowNull: false,
+    },
     isOperating: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
