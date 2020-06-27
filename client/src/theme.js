@@ -1,6 +1,6 @@
 // theme.js
 
-const theme = {
+export default {
     background: '#eceff4',
     primary: '#69b9b2',
     neumorphicOutset: {
@@ -14,5 +14,3 @@ const theme = {
         borderRadius: '.3rem',
     }
 };
-
-export default theme;
