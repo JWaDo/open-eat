@@ -9,7 +9,7 @@ import usersRouter from './routes/users';
  * 
  * Note: dont forget to update model export in ../models/sequelize/index.js
  */
-// import '../models/sequelize';
+import '../models/sequelize';
 
 let uri = "mongodb://root:password@mongo:27017/api?authSource=admin";
 

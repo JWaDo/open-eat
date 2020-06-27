@@ -13,7 +13,7 @@ Operation.belongsTo(Transaction);
 
 
 sequelize
-  .sync({ alter: true })
+  .sync({ force: true })
   .then((result) => console.log("All models were synchronized successfully."))
   .catch((result) => console.error(result, "Error with models synchronization"));
 

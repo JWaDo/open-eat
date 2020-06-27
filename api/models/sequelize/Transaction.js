@@ -18,6 +18,24 @@ Transaction.init({
         },
         allowNull: false,
     },
+    user: {
+        type: DataTypes.STRING, 
+        get: function() {
+            return JSON.parse(this.getDataValue('user'));
+        }, 
+        set: function(val) {
+            return this.setDataValue('user', JSON.stringify(val));
+        },
+        allowNull: false,
+    },
+    billingAddress: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    deliveryAddress: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     total: {
         type: DataTypes.FLOAT,
         allowNull: false,
