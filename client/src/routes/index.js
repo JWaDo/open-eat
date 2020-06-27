@@ -20,7 +20,7 @@ export const getRoutePathByName = (routeName, params = {}) => {
                 }
             }
         }
-        navigate.push(getRoutePathByName('NotFoundPage'));
+        navigate.push('NotFoundPage');
     });  
 };
 

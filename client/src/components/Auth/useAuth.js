@@ -33,6 +33,14 @@ function useAuth() {
             }
         }),
 
+        confirmAccount: (token, cb) => sdk.confirmAccount(token).then(data => {
+            if (data.success) {
+                if (cb) cb(null, data);
+            } else {
+                if (cb) cb(data, null);
+            }
+        }),
+
         confirm: (cb) => sdk.confirm().then(res => {
             if (res.success) {
                 dispatch({ type: actions.CONFIRM_SUCCESS, payload: res });

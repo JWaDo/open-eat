@@ -24,4 +24,8 @@ router.route('/confirm')
 router.route('/:id')
   .put(JWT.grantedType('admin'), UserController.put);
 
+// Account confirmation
+router.route('/confirm_account')
+  .post(UserController.confirmAccount)
+
 export default router;

@@ -4,7 +4,7 @@ class JWT {};
 
 JWT.SECRET_KEY = '_--)89"!!é03:;??:q:;d,/j^w &"éxo dçfenlkgp^à0fifMùlQLDNV(';
 
-JWT.create = function(payload) {
+JWT.create = function(payload, options = { expiresIn: '1h' }) {
     let token = jwt.sign(payload, JWT.SECRET_KEY);
     return token;
 }
@@ -32,7 +32,7 @@ JWT.verify = async function(req, res, next) {
     try {
         // Retrieve the payload and give it to the req
         let payload = jwt.verify(token, JWT.SECRET_KEY);
-        req.payload = payload;
+        req.user = payload;
         return next();
     } catch (err) {
         return res.status(401).json({
@@ -42,9 +42,7 @@ JWT.verify = async function(req, res, next) {
     }
 }
 
-JWT.grantedType = function(options = {
-    type: undefined,
-}) {
+JWT.grantedType = function(type) {
     let token;
     return (req, res, next) => {
         // Retrieve the token
@@ -68,9 +66,9 @@ JWT.grantedType = function(options = {
         try {
             // Retrieve the payload and give it to the req
             let payload = jwt.verify(token, JWT.SECRET_KEY);
-            req.payload = payload;
+            req.user = payload;
 
-            if (options.type && !(options.type.split('|').includes(payload.user.type))) {
+            if (type && !(type.split('|').includes(payload.user.type))) {
                 return res.status(401).json({
                     success: false,
                     message: 'Unauthorized'

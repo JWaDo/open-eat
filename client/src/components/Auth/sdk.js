@@ -9,12 +9,15 @@ const { URL_API } = confs;
 export default {
 
     // Login action
-    login: credentials => request.post(URL_API + '/users/login', credentials),
+    login: credentials => request.post(`${URL_API}/users/login`, credentials),
 
     // Register action
-    register: user => request.post(URL_API + '/users/register', user),
+    register: user => request.post(`${URL_API}/users/register`, user),
 
     // Confirm action
-    confirm: () => request.get(URL_API + '/users/confirm'),
+    confirm: () => request.get(`${URL_API}/users/confirm`),
+
+    //
+    confirmAccount: token => request.post(`${URL_API}/users/confirm_account`, token),
     
 };

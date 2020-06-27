@@ -48,12 +48,8 @@ User.init(
         type: DataTypes.STRING,
         allowNull: false,
     },
-    phone: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     currency: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(["EUR", "USD", "GBP", "CAD", "AUD"]),
         allowNull: false,
     },
     confirmed: {
@@ -63,11 +59,11 @@ User.init(
     },
     clientSecret: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     clientToken: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
