@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthForm from '../components/Auth/AuthForm';
+import AuthForm from '../components/BO/Auth/AuthForm';
 import { Container, Box, Paper, Link, Typography } from '@material-ui/core';
 import { getRoutePathByName } from '../routes';
 import { SIGNUP_VIEW } from './AuthPage';

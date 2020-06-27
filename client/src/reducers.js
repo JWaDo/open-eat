@@ -1,6 +1,6 @@
 // // Import reducers here
 import counterReducer from './components/CounterExample/reducer';
-import authReducer from './components/Auth/reducer';
+import authReducer from './components/BO/Auth/reducer';
 
 function combineReducers(reducers) {
     return function (state = {}, action) {

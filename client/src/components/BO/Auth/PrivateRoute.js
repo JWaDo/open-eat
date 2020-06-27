@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import useAuth from './useAuth'
-import { navigate } from '../../routes';
+import { navigate } from '../../../routes';
 import { Route } from 'react-router';
-import { SIGNIN_VIEW } from '../../pages/AuthPage';
+import { SIGNIN_VIEW } from '../../../pages/AuthPage';
 
 function PrivateRoute ({ type, ...props}) {
 

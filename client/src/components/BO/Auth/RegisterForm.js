@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import useAuth from './useAuth'
-import { navigate } from '../../routes';
+import { navigate } from '../../../routes';
 import { Button, makeStyles, Typography, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { SIGNIN_VIEW } from '../../pages/AuthPage';
-import Currencies from '../../configs/currencies.config';
-import Input from '../ui/Input';
+import { SIGNIN_VIEW } from '../../../pages/AuthPage';
+import Currencies from '../../../configs/currencies.config';
+import Input from '../../ui/Input';
 import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
@@ -60,7 +60,7 @@ function RegisterForm() {
     
     return (
         <form className={form} onSubmit={onSubmit}>
-            <Typography variant='h3' color='primary'>
+            <Typography variant='h4' color='primary'>
                 Register
             </Typography>
             <Input validate={required} required fullWidth onChange={onChange} label='Email address' name='email' type='text' />

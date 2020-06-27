@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { navigate } from '../routes';
 import { SIGNIN_VIEW } from './AuthPage';
 import { useSnackbar } from 'notistack';
-import useAuth from '../components/Auth/useAuth';
+import useAuth from '../components/BO/Auth/useAuth';
 import { Container, CircularProgress, Box, Typography } from '@material-ui/core';
 
 function EmailValidationPage({ match }) {

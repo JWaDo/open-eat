@@ -1,7 +1,7 @@
 // Let's import request object to simply our request lecture
 // Please take a look at request object, cause it does smthg with response before you get it
-import { request } from "../../request";
-import confs from '../../confs';
+import { request } from "../../../request";
+import confs from '../../../confs';
 
 const { URL_API } = confs;
 

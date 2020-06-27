@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterForm from '../components/Auth/RegisterForm';
+import RegisterForm from '../components/BO/Auth/RegisterForm';
 import { Container, Box, Paper, Typography, Link } from '@material-ui/core';
 import { SIGNIN_VIEW } from './AuthPage';
 import { getRoutePathByName } from '../routes';

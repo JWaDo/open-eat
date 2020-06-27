@@ -1,5 +1,5 @@
 import * as actions from './actions';
-import { useSelector, useDispatch } from "../../store";
+import { useSelector, useDispatch } from "../../../store";
 import sdk from "./sdk";
 
 // Lets create our custom Hook that linked interface with state interractions

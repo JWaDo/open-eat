@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useAuth from './useAuth'
-import { navigate } from '../../routes';
+import { navigate } from '../../../routes';
 import { TextField, Button, makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -49,7 +49,7 @@ function AuthForm() {
     
     return (
         <form className={form} onSubmit={onSubmit}>
-            <Typography variant='h3' color='primary'>
+            <Typography variant='h4' color='primary'>
                 Sign in
             </Typography>
             <TextField error={error} helperText={error && 'Invalid account'} required fullWidth onChange={onChange} label='Email address' name='email' type='text' />
