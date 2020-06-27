@@ -8,6 +8,10 @@ Operation.init({
         type: DataTypes.FLOAT,
         allowNull: false,
     },
+    status: {
+        type: DataTypes.ENUM(["WAITING", "CANCELED", "COMPLETED", "FAILED"]),
+        allowNull: false,
+    },
     type: {
         type: DataTypes.ENUM(["PAYMENT", "REFUND"])
     }},
