@@ -5,7 +5,7 @@ import './App.css';
 import routes from './routes/routeConfigurations';
 import PrivateRoute from './components/BO/Auth/PrivateRoute';
 
-const generateRoutes = () => routes.map(route => route.private !== false ? <PrivateRoute {...route} /> : <Route {...route} />);
+const generateRoutes = () => routes.map((route, key) => route.private !== false ? <PrivateRoute key={key} {...route} /> : <Route key={key} {...route} />);
 
 function App() {
   return (
