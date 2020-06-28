@@ -17,10 +17,11 @@ export default function (state = initialState, action) {
             break;
         }
         
-        case action.LOGOUT: 
-        case action.CONFIRM_FAILED: 
-            return initialState
+        case actions.LOGOUT: 
+        case actions.CONFIRM_FAILED: {
+            return initialState;
             break;
+        }
 
         /**
          * We only define this 2 actions causes others do not affect our state

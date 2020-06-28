@@ -1,5 +1,6 @@
 import sequelize from '../../lib/sequelize';
 import { DataTypes, Model } from 'sequelize';
+import Transaction from './Transaction';
 
 class Operation extends Model {}
 

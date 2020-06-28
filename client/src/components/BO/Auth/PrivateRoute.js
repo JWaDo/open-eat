@@ -3,6 +3,7 @@ import useAuth from './useAuth'
 import { navigate } from '../../../routes';
 import { Route } from 'react-router';
 import { SIGNIN_VIEW } from '../../../pages/AuthPage';
+import { CircularProgress, Box } from '@material-ui/core';
 
 function PrivateRoute ({ type, ...props}) {
 
@@ -21,7 +22,14 @@ function PrivateRoute ({ type, ...props}) {
         })
     }, [ token ]);
 
-    if (confirming) return 'Confirmation in progress...'; // TODO: Replace with a loader
+    if (confirming) return (
+        <Box 
+            width='100%' height='100vh'
+            display='flex' justifyContent='center' alignItems='center'
+        >
+            <CircularProgress color='primary' />
+        </Box>
+    )
 
     if (type && !type.split('|').includes(user.type)) navigate.push('NotFoundPage');
     

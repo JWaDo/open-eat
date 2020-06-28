@@ -43,45 +43,43 @@ UserController.put = (req, res) => {
 }
 
 UserController.register = (req, res) => {
-    try {
-        User.create(req.body).then((user) => {
-            // Create a token for confirmation
-            const validationToken = JWT.create({
-                type: 'confirmation_account',
-                user: {
-                    id: user.id,
-                    email: user.email,
-                },
-            }, { expiresIn: '24h' });
-            // Send mail
-            const validationURL = `http://localhost:3000/account/confirm/${validationToken}`; // Root URL should be in config file in order to handle dev/prod mode
-            Mailer.send({
-                to: user.email,
-                subject: 'Confirm your email to finish!',
-                html: `Welcome! Please validate your email: <a href="${validationURL}">Validate my email</a>`,
-            }, (err, info) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log(`Mail has been sent: ${validationURL}`);
-                }
-            });
-            return res.status(201).json({
-                success: true,
-                user: user,
-            });
+    User.create(req.body).then((user) => {
+        // Create a token for confirmation
+        const validationToken = JWT.create({
+            type: 'confirmation_account',
+            user: {
+                id: user.id,
+                email: user.email,
+            },
+        }, { expiresIn: '24h' });
+        // Send mail
+        const validationURL = `http://localhost:3000/account/confirm/${validationToken}`; // Root URL should be in config file in order to handle dev/prod mode
+        Mailer.send({
+            to: user.email,
+            subject: 'Confirm your email to finish!',
+            html: `Welcome! Please validate your email: <a href="${validationURL}">Validate my email</a>`,
+        }, (err, info) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(`Mail has been sent: ${validationURL}`);
+            }
         });
-    } catch (error) {
+        return res.status(201).json({
+            success: true,
+            user: user,
+        });
+    }).catch(error => {
         if (error instanceof ValidationError) {
             const errors = error.errors.reduce((acc, item) => {
-              acc[item.path] = [...(acc[item.path] || []), item.message];
-              return acc;
+                acc[item.path] = [...(acc[item.path] || []), item.message];
+                return acc;
             }, {});
             res.status(400).json(errors);
-          } else {
+        } else {
             res.sendStatus(500);
-          }
-    }
+        }
+    });
 }
 
 UserController.login = (req, res) => {

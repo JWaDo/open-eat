@@ -7,6 +7,7 @@ import DashboardPage from '../pages/DashboardPage';
 import SiteMarchand from '../pages/SiteMarchand';
 import AuthPage from '../pages/AuthPage';
 import EmailValidationPage from '../pages/EmailValidationPage';
+import CheckoutPage from '../pages/CheckoutPage';
 
 // Routes
 export default [
@@ -37,6 +38,13 @@ export default [
         exact: true,
         private: true,
         component: DashboardPage,
+    },
+    {
+        name: 'CheckoutPage',
+        path: '/checkout/:idTransaction',
+        exact: true,
+        private: false,                     // Note that checkout page is public
+        component: CheckoutPage,
     },
 
     /**

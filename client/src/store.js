@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useReducer } from 'reinspect'
 import combinedReducer from './reducers';
 
@@ -8,20 +8,20 @@ export const SESSION_STATE_KEY = 'app.state';
 
 export const StoreProvider = ({ children }) => {
     // Init all states with memorized values
-    const memorizedState = JSON.parse(localStorage.getItem(SESSION_STATE_KEY));
+    const memoizedState = JSON.parse(localStorage.getItem(SESSION_STATE_KEY));
 
-    const initialState = memorizedState ?  {...combinedReducer(undefined, {type: undefined}), ...memorizedState, } : combinedReducer(undefined, {type: undefined});
-
-    console.log(initialState);
+    const initialState = memoizedState ?  {...combinedReducer(undefined, {type: undefined}), ...memoizedState, } : combinedReducer(undefined, {type: undefined});
     // 
-    const contextValue = useReducer(combinedReducer, initialState, () => initialState, 'store');
+    const [state, dispatch] = useReducer(combinedReducer, initialState, () => initialState, 'store');
     //
     useEffect(() => {
-        localStorage.setItem(SESSION_STATE_KEY, JSON.stringify(contextValue[0]));
-    }, [contextValue]);
+        
+        localStorage.setItem(SESSION_STATE_KEY, JSON.stringify(state));
+        
+    }, [ state ]);
     
     return (
-        <StoreContext.Provider value={contextValue}>
+        <StoreContext.Provider value={[state, dispatch]}>
             {children}
         </StoreContext.Provider>
     );

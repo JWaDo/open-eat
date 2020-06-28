@@ -3,9 +3,11 @@ import useAuth from './useAuth'
 import { navigate } from '../../../routes';
 import { Button, makeStyles, Typography, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { SIGNIN_VIEW } from '../../../pages/AuthPage';
-import Currencies from '../../../configs/currencies.config';
+import TransactionConfig from '../../../config/transactions.config';
 import Input from '../../ui/Input';
 import { useSnackbar } from 'notistack';
+
+const Currencies = TransactionConfig.currencies;
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -82,7 +84,7 @@ function RegisterForm() {
                     onChange={onChange}
                     name='currency'
                 >
-                    {Currencies.map(curr => <MenuItem value={curr.currency}>{curr.name}</MenuItem>)}
+                    {Currencies.map(curr => <MenuItem key={curr.currency} value={curr.currency}>{curr.name}</MenuItem>)}
                 </Select>
             </FormControl>
             

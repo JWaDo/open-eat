@@ -68,7 +68,9 @@ JWT.grantedType = function(type) {
             let payload = jwt.verify(token, JWT.SECRET_KEY);
             req.user = payload;
 
-            if (type && !(type.split('|').includes(payload.user.type))) {
+            const allowedTypes = type.split('|');
+
+            if (type && !(allowedTypes.includes(payload.type))) {
                 return res.status(401).json({
                     success: false,
                     message: 'Unauthorized'

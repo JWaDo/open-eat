@@ -5,18 +5,19 @@ import Operation from './Operation';
 import './hooks';
 
 // Relations
-User.hasMany(Transaction);
 Transaction.belongsTo(User);
-
 Transaction.hasMany(Operation);
+
+// Relations
 Operation.belongsTo(Transaction);
 
+// Relations
+User.hasMany(Transaction);
 
-sequelize
-  .sync({ force: true })
-  .then((result) => console.log("All models were synchronized successfully."))
-  .catch((result) => console.error(result, "Error with models synchronization"));
-
+// sequelize
+//   .sync({ force: true })
+//   .then((result) => console.log("All models were synchronized successfully."))
+//   .catch((result) => console.error(result, "Error with models synchronization"));
 
 export default {
     sequelize,

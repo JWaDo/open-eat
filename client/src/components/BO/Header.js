@@ -1,14 +1,55 @@
 import React from 'react'
-import { AppBar, Toolbar } from '@material-ui/core'
+import { AppBar, Toolbar, Container, Box, Typography, IconButton, Button, useScrollTrigger, Slide } from '@material-ui/core'
+import { AccountBox as AccountBoxIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons'
 
-function Header() {
+
+function HideOnScroll({ children }) {
+    const trigger = useScrollTrigger();
+  
     return (
-        <AppBar position='static'>
-            <Toolbar color='secondary'>
-                
-            </Toolbar>
-        </AppBar>
+      <Slide appear={false} direction="down" in={!trigger}>
+        {children}
+      </Slide>
+    );
+}
+
+function Header({ username, logout, ...props}) {
+    return (
+        <React.Fragment>
+            <HideOnScroll {...props}>
+                <AppBar color='secondary'>
+                    <Toolbar>
+                        <Container maxWidth='lg'>
+                            <Box
+                                width='100%'
+                                display='flex' justifyContent='space-between' alignItems='center'
+                            >
+                                <Box display='flex' alignItems='center'>
+                                    <IconButton>
+                                        <AccountBoxIcon color='primary' />
+                                    </IconButton>
+                                    <Typography color='primary'>
+                                        {username}
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Button 
+                                        variant='outlined' color='primary' size='small'
+                                        endIcon={<ExitToAppIcon />}
+                                        onClick={logout}
+                                    >
+                                        Log out
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </Container>
+                    </Toolbar>
+                </AppBar>
+            </HideOnScroll>
+        </React.Fragment>
     )
 }
+
+
 
 export default Header

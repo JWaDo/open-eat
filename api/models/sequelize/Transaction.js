@@ -1,16 +1,18 @@
 import sequelize from '../../lib/sequelize';
 import { DataTypes, Model } from 'sequelize';
+import User from './User';
+import Operation from './Operation';
 
 class Transaction extends Model {}
 
 Transaction.init({
     status: {
-        type: DataTypes.ENUM(["CONFIRMED", "CANCELED"]),
-        allowNull: false,
+        type: DataTypes.ENUM(["PENDING", "CONFIRMED", "CANCELED"]),
+        defaultValue: 'PENDING',
     },
     isOperating: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        defaultValue: true,
     },
     basket: {
         type: DataTypes.STRING, 
@@ -22,13 +24,13 @@ Transaction.init({
         },
         allowNull: false,
     },
-    user: {
+    customer: {
         type: DataTypes.STRING, 
         get: function() {
-            return JSON.parse(this.getDataValue('user'));
+            return JSON.parse(this.getDataValue('customer'));
         }, 
         set: function(val) {
-            return this.setDataValue('user', JSON.stringify(val));
+            return this.setDataValue('customer', JSON.stringify(val));
         },
         allowNull: false,
     },

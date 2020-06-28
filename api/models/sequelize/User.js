@@ -1,6 +1,7 @@
 import sequelize from '../../lib/sequelize';
 import { DataTypes, Model } from 'sequelize';
 import bcrypt from 'bcryptjs';
+import Transaction from './Transaction';
 
 // Generation du model
 class User extends Model {}

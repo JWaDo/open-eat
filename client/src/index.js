@@ -16,23 +16,22 @@ ReactDOM.render(
 
     <StateInspector>
     
-    {/* Provider for store */}
-      <StoreProvider>
+      {/*  Provider for snackbar display ('notistack')  */}
+      <SnackbarProvider maxSnack={1} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
 
-        {/*  Provider for snackbar display ('notistack')  */}
-        <SnackbarProvider maxSnack={1} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-
-          {/* Provider material ui theming */}
-          <MuiThemeProvider theme={theme}>
+        {/* Provider material ui theming */}
+        <MuiThemeProvider theme={theme}>
+          {/* Provider for store */}
+          <StoreProvider>
 
             {/* The entire application */}
             <App />
-            
-          </MuiThemeProvider>
-        
-        </SnackbarProvider>
 
-      </StoreProvider>
+          </StoreProvider>
+          
+        </MuiThemeProvider>
+      
+      </SnackbarProvider>
 
     </StateInspector>
     
