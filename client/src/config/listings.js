@@ -50,9 +50,9 @@ export default [
     },
     {
         name: "Toad",
-        description: "He the cuttest mushroom ever seen in a Kart !",
+        description: "He the cuttest mushroom ever seen in a Kart ! He's affraid of being eaten",
         price: 12,
         quantity: 0,
-        image: 'https://lh3.googleusercontent.com/proxy/Ih_4SV91UlxATJ4hFUIWm65IfMxA7f7oo1aq1FaceEh0viXuGtfg75JQBQzcOCukub57lQu-BL-EjQZtMzcbZbO8hTJAAdmiXxQGIrJbQUfqcP1xJW3TAMpVJFHF8w',
+        image: 'https://i.pinimg.com/originals/66/bf/d2/66bfd2075c0d7ae9a54d0a64ed6f05f9.png',
     },
 ];

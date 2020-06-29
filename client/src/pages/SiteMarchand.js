@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Basket from '../components/SiteMarchand/Basket';
+import NavBar from '../components/Navigation/NabBar';
+import roles from '../configs/roles';
+import WhoAmI from '../components/SiteMarchand/WhoAmI';
 
 // /site-marchand/basket --> formulaire de passage order
 
@@ -10,9 +13,13 @@ import Basket from '../components/SiteMarchand/Basket';
 // [{ name, desc, price, quantity }] --> format à renvoyer
 
 const SiteMarchand = () => {
+
+    const [role, setRole] = useState("")
+
     return (
         <div>
-            <Basket />
+            <NavBar role={role}/>
+            <WhoAmI setRole={setRole}/>
         </div>
     )
 }
