@@ -26,8 +26,10 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function CheckoutForm({ transaction, checkoutToken, operation }) {
+function CheckoutForm({ checkoutInfo, checkoutToken }) {
 
+    const { operation, transaction } = checkoutInfo;
+    
     const required = v => v && v.length > 0 ? undefined : 'This value is required';
     const { enqueueSnackbar } = useSnackbar();
 
@@ -45,19 +47,18 @@ function CheckoutForm({ transaction, checkoutToken, operation }) {
     const onSubmit = e => {
         e.preventDefault();
 
-        const operation = {
-            type: Operations.types.PAYMENT,
-            amount: transaction.total,
+        const operationToProcess = {
+            ...operation,
             card,
         };
 
         // Send the paiement request
-        request.post(`${URL_API}/transactions/${transaction.id}/operations`, operation, { 'Authorization': `Bearer ${checkoutToken}` })
+        request.post(`${URL_API}/transactions/${operation.TransactionId}/operations`, operationToProcess, { 'Authorization': `Bearer ${checkoutToken}` })
             .then(data => {
                 if (data.success) {
                     window.location.href = data.operation.Transaction.User.confirmUrl;
                 } else {
-                    return navigate.replace("CheckoutPage", { id_transaction: 'error' });
+                    return navigate.replace("CheckoutPage", { token: 'error' });
                 }
             }) // TODO: Do something with the data
             .catch(err => console.error('error', err));
@@ -66,12 +67,12 @@ function CheckoutForm({ transaction, checkoutToken, operation }) {
     const onCancel = e => {
         e.preventDefault();
         // Notify the server that the paiement has been canceled by the user
-        request.post(`${URL_API}/transactions/${transaction.id}/cancel`, {}, { 'Authorization': `Bearer ${checkoutToken}` })
+        request.post(`${URL_API}/transactions/${operation.TransactionId}/operations/${operation.id}/cancel`, {}, { 'Authorization': `Bearer ${checkoutToken}` })
             .then(data => {
                 if (data.success) {
-                    window.location.href = transaction.User.cancelUrl;
+                    window.location.href = data.operation.Transaction.User.cancelUrl;
                 } else {
-                    return navigate.replace("CheckoutPage", { id_transaction: 'error' });
+                    return navigate.replace("CheckoutPage", { token: 'error' });
                 }
             })
     };

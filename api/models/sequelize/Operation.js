@@ -13,6 +13,15 @@ Operation.init({
         type: DataTypes.ENUM(["WAITING", "CANCELED", "COMPLETED", "FAILED"]),
         allowNull: false,
     },
+    card: {
+        type: DataTypes.STRING, 
+        get: function() {
+            return JSON.parse(this.getDataValue('card'));
+        }, 
+        set: function(val) {
+            return this.setDataValue('card', JSON.stringify(val || {}));
+        },
+    },
     type: {
         type: DataTypes.ENUM(["PAYMENT", "REFUND"])
     }},

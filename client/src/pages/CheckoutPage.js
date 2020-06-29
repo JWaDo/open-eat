@@ -9,37 +9,45 @@ import Transaction from '../config/transactions.config';
 
 const { URL_API } = confs;
 
-function CheckoutPage({ match, location }) {
+function CheckoutPage({ match }) {
 
-    const { id_transaction } = match.params;
-    const { token } = location.search && qs.parse(location.search.replace('?', ''));
+    const {token } = match.params;
 
-    const decodedToken = token && JSON.parse(atob(token.split('.')[1])) || {};
-
-    const [ transaction, setTransaction ] = useState(decodedToken.transaction);
-    const [ operation, setOperation ] = useState(decodedToken.operation);
+    const [ checkoutInfo, setCheckoutInfo ] = useState(null);
     const [error, setError ] = useState(false);
+
+    const decodeToken = token => {
+        if (token && token.split('.').length === 3) {
+            return JSON.parse(atob(token.split('.')[1]));
+        }
+        return null;
+    }
 
     const { enqueueSnackbar } = useSnackbar();
     
     useEffect(() => {
         
         const failed = () => enqueueSnackbar('We can\'t process payment for now.', { variant: 'error', autoHideDuration: 3000 });
-        // Retrieve the transaction
-
-        if (!(decodedToken.transaction && (Number(decodedToken.transaction.id) === Number(id_transaction)))) {
-            setError(true);
-            return failed();
-        };
         
-        setTransaction(decodedToken.transaction);
-        setOperation(decodedToken.operation);
+        const decodedToken = decodeToken(token);
 
-    }, [ id_transaction ])
+        if (decodedToken) {
+            console.log('decodedToken', decodedToken);
+            setCheckoutInfo(decodedToken);
+        } else {
+            failed();
+            setError(true);
+        }
 
-    console.log('operation, transaction', operation, transaction);
+    }, [ token ])
 
-    if (!(!error && (transaction && transaction.status === Transaction.status.PENDING && transaction.isOperating === true))) return <CheckoutError />;
+    if (!checkoutInfo && !error) return (
+        <Box width='100%' height='100vh' display='flex' justifyContent='center' alignItems='center'>
+            <CircularProgress color='primary' />
+        </Box>
+    );
+
+    if (error) return <CheckoutError />;
 
     return (
         <Container maxWidth='xs'>
@@ -50,7 +58,7 @@ function CheckoutPage({ match, location }) {
                 <Box width='100%'>
                     <Paper>
                         <Box p={3}>
-                            <CheckoutForm transaction={transaction} operation={operation} checkoutToken={token} />
+                            <CheckoutForm checkoutInfo={checkoutInfo} checkoutToken={token} />
                         </Box>
                     </Paper>
                 </Box>

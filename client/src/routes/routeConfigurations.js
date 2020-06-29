@@ -41,7 +41,7 @@ export default [
     },
     {
         name: 'CheckoutPage',
-        path: '/checkout/:id_transaction',
+        path: '/checkout/:token',
         exact: true,
         private: false,                     // Note that checkout page is public
         component: CheckoutPage,

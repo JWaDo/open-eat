@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import usersRouter from './routes/users';
 import transactionsRouter from './routes/transactions';
+import meRouter from './routes/me';
 /**
  * Comment or uncoment this line to synchronize Database
  * 
@@ -30,6 +31,7 @@ app.use('/assets', express.static(path.join(__dirname, '../public')));
  */
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
+app.use('/me', meRouter);
 
 app.get('/', (req, res) => {
   const message = 'Welcome to the Plateforme API.';

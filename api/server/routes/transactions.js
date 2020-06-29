@@ -6,16 +6,15 @@ const router = express.Router();
 
 // Get all transactions [ Reachable for token type 'admin' ] --> see login method
 router.route('/')
-  .get(JWT.verify, TransactionController.cGet)
-  .post(TransactionController.createTransactionIntent);
+  .get(JWT.verify, TransactionController.cGet);
 
 router.route('/:id')
   .get(JWT.verify, TransactionController.iGet);
 
-router.route('/:id/cancel')
+router.route('/:idTransaction/operations/:idOperation/cancel')
   .post(JWT.verify, TransactionController.cancelOrder);
 
-router.route('/:id/operations')
+router.route('/:idTransaction/operations')
   .post(JWT.verify, TransactionController.createOperation);
 
 export default router;

@@ -6,14 +6,6 @@ import Operation from './Operation';
 class Transaction extends Model {}
 
 Transaction.init({
-    status: {
-        type: DataTypes.ENUM(["PENDING", "CONFIRMED", "CANCELED"]),
-        defaultValue: 'PENDING',
-    },
-    isOperating: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-    },
     basket: {
         type: DataTypes.STRING, 
         get: function() {

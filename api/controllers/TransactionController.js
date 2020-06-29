@@ -15,7 +15,7 @@ TransactionController.cGet = (req, res) => {
     
     const filters = user.type === 'admin' ? {} : { where: { UserId: user.id } };
     
-    Transaction.findAll({ ...filters }).then(transactions => {
+    Transaction.findAll({ ...filters, include: [ { model: Operation } ] }).then(transactions => {
         res.status(200).json({
             success: true,
             transactions
@@ -53,57 +53,20 @@ TransactionController.iGet = (req, res) => {
     });    
 };
 
-TransactionController.createTransactionIntent = (req, res) => {
-
-    const { clientToken, clientSecret } = req.body;
-    
-    User.findOne({ where: { clientSecret, clientToken }}).then(user => {
-        // Reject if no user found
-        if (!(user && user.get('confirmed') === true)) return res.status(400).json({ success: false, err: 'Bad request' });
-        // Retrieve transactions information
-        const { basket, customer, billingAddress, deliveryAddress, currency, total } = req.body;
-        // 
-        Transaction.create({ status: 'PENDING', basket, customer, billingAddress, deliveryAddress, currency, total, UserId: user.get('id') }, { include: [ User ] })
-            .then(trans => {
-
-                const operation = {
-                    amount: trans.total,
-                    type: 'PAYMENT',
-                    status: 'WAITING',
-                };
-                
-                const paymentToken = JWT.create({
-                    type: 'checkout',
-                    operation,
-                    transaction: trans.toJSON(),
-                });
-                
-                const transaction = {
-                    ...trans.toJSON(),
-                    operation,
-                    checkoutForm: `http://localhost:3001/checkout/${trans.id}?token=${paymentToken}`,
-                };
-                
-                return res.status(200).json({ success: true, transaction });
-            });
-    });
-};
-
 TransactionController.cancelOrder = (req, res) => {
     
-    const { id } = req.params;
+    const { idTransaction, idOperation } = req.params;
     
-    Transaction.findOne({ where: { id }, include: [ User ]}).then(transaction => {
+    Operation.findOne({ where: { id: idOperation, '$Transaction.id$': idTransaction }, include: [ {model: Transaction, include: [ {model: User} ]} ]}).then(operation => {
 
-        if (!(transaction && transaction.status === 'PENDING')) return res.status(400).json({ success: false, error: 'Bad request' });
+        if (!(operation && operation.get('status') !== 'COMPLETED')) return res.status(400).json({ success: false, error: 'Bad request' });
 
-        transaction
+        operation
             .set('status', 'CANCELED')
-            .set('isOperating', false)
             .save()
         ;
 
-        return res.status(200).json({ success: true, transaction });
+        return res.status(200).json({ success: true, operation: operation.toJSON() });
         
     });
     
@@ -111,62 +74,53 @@ TransactionController.cancelOrder = (req, res) => {
 
 TransactionController.createOperation = (req, res) => {
 
-    const { id } = req.params;
+    const { idTransaction } = req.params;
+    const { id, card } = req.body;
 
-    Transaction.findOne({ where: { id }, include: [ Operation ] }).then(transaction => {
+    Operation.findOne({ where: { id, '$Transaction.id$': idTransaction, status: 'WAITING' }, include: [ {model: Transaction, include: [ { model: User } ] } ] }).then(operation => {
 
-        const { type, amount } = req.body;
-        
-        if (!transaction || (type === 'PAYMENT' && (transaction.Operations.length > 0))) return res.status(400).json({ success: false, error: 'Bad request' });
-        
+        if (!operation) return res.status(400).json({ success: false, error: 'Bad request' });
         // Create the Operation
-        Operation.create({ status: 'WAITING', amount, type, TransactionId: transaction.get('id') }, { include: [ { model: Transaction, include: [ User ]} ]})
-            .then(operation => {
-                // Note that we not return the response, cause we wanna start behin an asynchronous treatment
-                Operation.findOne({ where: { id: operation.id }, include: [ {model: Transaction, include: [ User ] } ]}).then(ope => {
-                    res.status(201).json({ success: true, operation: ope });
+        res.status(201).json({ success: true, operation });
 
-                    console.log('Response has been sent... Calling the PSP...')
-                    // Start the PSP communication here
-                    const options = {
-                        host: 'psp',
-                        path: '/process_payment',
-                        port: 9000,
-                        //This is what changes the request to a POST request
-                        method: 'POST',
-                        json: ope,
-                    };
-                    //
-                    const req = http.request(options, response => {
-                    
-                        let data = '';
-                        response.on('data', chunk => {
-                            data += chunk;
-                        });
-
-                        response.on('end', () => {
-                            data = JSON.parse(data);
-                            if (data.success) {
-                                // Request payment has success
-                                ope.set('status', 'COMPLETED').save();
-                            } else {
-                                // Request payment has failed
-                                ope.set('status', 'FAILED').save();
-                            }
-                        });
-                    });
-                    // Handle PSP errors
-                    req.on('error', (err) => {
-                        // Handle errors
-                        ope.set('status', 'FAILED').save();
-                    });
-
-                    req.end();
-                    
-                });
+        console.log('Response has been sent... Calling the PSP...');
+        // Start the PSP communication here
+        const options = {
+            host: 'psp',
+            path: '/process_payment',
+            port: 9000,
+            //This is what changes the request to a POST request
+            method: 'POST',
+            json: operation,
+        };
+        //
+        const req = http.request(options, response => {
+        
+            let data = '';
+            response.on('data', chunk => {
+                data += chunk;
             });
+
+            response.on('end', () => {
+                data = JSON.parse(data);
+                if (data.success) {
+                    // Request payment has success
+                    operation.set('status', 'COMPLETED').set('card', card).save();
+                } else {
+                    // Request payment has failed
+                    operation.set('status', 'FAILED').save();
+                }
+            });
+        });
+        // Handle PSP errors
+        req.on('error', (err) => {
+            // Handle errors
+            ope.set('status', 'FAILED').save();
+        });
+
+        req.end();
+        
     });
-    
 };
 
 export default TransactionController;

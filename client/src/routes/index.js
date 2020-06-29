@@ -12,11 +12,11 @@ export const getRoutePathByName = (routeName, params = {}) => {
 
     if (!route.path) return ;
 
-    return route.path.replace(/:+(.\w)*/g, (match) => {
+    return route.path.replace(/:+(.\w*)/g, (fullMatch, group1) => {
         for (let param in params) {
             if (params.hasOwnProperty(param)) {
-                if (param === match.replace(':', '')) {
-                    return params[param];
+                if (param === group1) {
+                    return params[group1];
                 }
             }
         }
