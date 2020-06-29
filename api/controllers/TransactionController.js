@@ -2,6 +2,10 @@ import Transaction from '../models/sequelize/Transaction';
 import User from '../models/sequelize/User';
 import Operation from '../models/sequelize/Operation';
 import JWT from '../services/jwt';
+import http from 'http';
+import { send } from 'process';
+
+const PSP_URL = 'http://psp'; // Note that we use the service name cause we are inside the docker-compose network
 
 class TransactionController {};
 
@@ -121,10 +125,45 @@ TransactionController.createOperation = (req, res) => {
                 // Note that we not return the response, cause we wanna start behin an asynchronous treatment
                 Operation.findOne({ where: { id: operation.id }, include: [ {model: Transaction, include: [ User ] } ]}).then(ope => {
                     res.status(201).json({ success: true, operation: ope });
+
+                    console.log('Response has been sent... Calling the PSP...')
+                    // Start the PSP communication here
+                    const options = {
+                        host: 'psp',
+                        path: '/process_payment',
+                        port: 9000,
+                        //This is what changes the request to a POST request
+                        method: 'POST',
+                        json: ope,
+                    };
+                    //
+                    const req = http.request(options, response => {
+                    
+                        let data = '';
+                        response.on('data', chunk => {
+                            data += chunk;
+                        });
+
+                        response.on('end', () => {
+                            data = JSON.parse(data);
+                            if (data.success) {
+                                // Request payment has success
+                                ope.set('status', 'COMPLETED').save();
+                            } else {
+                                // Request payment has failed
+                                ope.set('status', 'FAILED').save();
+                            }
+                        });
+                    });
+                    // Handle PSP errors
+                    req.on('error', (err) => {
+                        // Handle errors
+                        ope.set('status', 'FAILED').save();
+                    });
+
+                    req.end();
+                    
                 });
-
-                // Start the PSP requests!
-
             });
     });
     
