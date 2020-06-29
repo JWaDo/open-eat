@@ -28,7 +28,7 @@ export default {
     ],
     status: {
         PENDING: 'PENDING',
-        CONFIMED: 'CONFIMED',
+        CONFIRMED: 'CONFIRMED',
         CANCELED: 'CANCELED',
     }
 };

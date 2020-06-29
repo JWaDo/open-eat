@@ -6,6 +6,7 @@ import { request } from '../../../request';
 import confs from '../../../confs';
 import { useSnackbar } from 'notistack';
 import Operations from '../../../config/operations.config';
+import { navigate } from '../../../routes';
 
 const { URL_API } = confs;
 
@@ -55,6 +56,8 @@ function CheckoutForm({ transaction, checkoutToken, operation }) {
             .then(data => {
                 if (data.success) {
                     window.location.href = data.operation.Transaction.User.confirmUrl;
+                } else {
+                    return navigate.replace("CheckoutPage", { id_transaction: 'error' });
                 }
             }) // TODO: Do something with the data
             .catch(err => console.error('error', err));
@@ -68,7 +71,7 @@ function CheckoutForm({ transaction, checkoutToken, operation }) {
                 if (data.success) {
                     window.location.href = transaction.User.cancelUrl;
                 } else {
-                     enqueueSnackbar('Error: we can\'t cancel your order for now', { variant: 'error', autoHideDuration: 3000 });
+                    return navigate.replace("CheckoutPage", { id_transaction: 'error' });
                 }
             })
     };
@@ -104,7 +107,7 @@ function CheckoutForm({ transaction, checkoutToken, operation }) {
                 </Box>
             </Box>
             <Button disabled={processing} variant='contained' color='primary' type='submit' fullWidth>
-                {processing ? 'Processing ...' : 'Process to' + operation.type === Operations.types.PAYMENT ? 'payement' : 'refund'}
+                {processing ? 'Processing ...' : ('Process to ' + (operation.type === Operations.types.PAYMENT ? 'payement' : 'refund'))}
             </Button>
             <Typography variant='subtitle2'>
                 I am a looser, so please <Link href={''} onClick={onCancel}>cancel now.</Link>

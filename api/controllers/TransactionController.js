@@ -59,7 +59,7 @@ TransactionController.createTransactionIntent = (req, res) => {
         // Retrieve transactions information
         const { basket, customer, billingAddress, deliveryAddress, currency, total } = req.body;
         // 
-        Transaction.create({ basket, customer, billingAddress, deliveryAddress, currency, total, UserId: user.get('id') }, { include: [ User ] })
+        Transaction.create({ status: 'PENDING', basket, customer, billingAddress, deliveryAddress, currency, total, UserId: user.get('id') }, { include: [ User ] })
             .then(trans => {
 
                 const operation = {
@@ -89,9 +89,9 @@ TransactionController.cancelOrder = (req, res) => {
     
     const { id } = req.params;
     
-    Transaction.findOne({ where: { id }}).then(transaction => {
+    Transaction.findOne({ where: { id }, include: [ User ]}).then(transaction => {
 
-        if (!transaction) return res.status(400).json({ success: false, error: 'Bad request' });
+        if (!(transaction && transaction.status === 'PENDING')) return res.status(400).json({ success: false, error: 'Bad request' });
 
         transaction
             .set('status', 'CANCELED')
@@ -99,7 +99,7 @@ TransactionController.cancelOrder = (req, res) => {
             .save()
         ;
 
-        res.status(200).json({ success: true, transaction });
+        return res.status(200).json({ success: true, transaction });
         
     });
     
@@ -109,11 +109,11 @@ TransactionController.createOperation = (req, res) => {
 
     const { id } = req.params;
 
-    Transaction.findOne({ where: { id }}).then(transaction => {
-
-        if (!transaction || (transaction.status === 'CONFIRMED')) return res.status(400).json({ success: false, error: 'Bad request' });
+    Transaction.findOne({ where: { id }, include: [ Operation ] }).then(transaction => {
 
         const { type, amount } = req.body;
+        
+        if (!transaction || (type === 'PAYMENT' && (transaction.Operations.length > 0))) return res.status(400).json({ success: false, error: 'Bad request' });
         
         // Create the Operation
         Operation.create({ status: 'WAITING', amount, type, TransactionId: transaction.get('id') }, { include: [ { model: Transaction, include: [ User ]} ]})

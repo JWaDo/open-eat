@@ -11,23 +11,23 @@ const { URL_API } = confs;
 
 function CheckoutPage({ match, location }) {
 
-    const { idTransaction } = match.params;
-    const { token } = qs.parse(location.search.replace('?', ''));
+    const { id_transaction } = match.params;
+    const { token } = location.search && qs.parse(location.search.replace('?', ''));
 
-    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    const decodedToken = token && JSON.parse(atob(token.split('.')[1])) || {};
 
-    const [ transaction, setTransaction ] = useState(null);
-    const [ operation, setOperation ] = useState(null);
+    const [ transaction, setTransaction ] = useState(decodedToken.transaction);
+    const [ operation, setOperation ] = useState(decodedToken.operation);
     const [error, setError ] = useState(false);
 
     const { enqueueSnackbar } = useSnackbar();
     
     useEffect(() => {
         
-        const failed = () => enqueueSnackbar('We can\'t for a paiement now.', { variant: 'error', autoHideDuration: 3000 });
+        const failed = () => enqueueSnackbar('We can\'t process payment for now.', { variant: 'error', autoHideDuration: 3000 });
         // Retrieve the transaction
 
-        if (Number(decodedToken.transaction.id) !== Number(idTransaction)) {
+        if (!(decodedToken.transaction && (Number(decodedToken.transaction.id) === Number(id_transaction)))) {
             setError(true);
             return failed();
         };
@@ -35,8 +35,10 @@ function CheckoutPage({ match, location }) {
         setTransaction(decodedToken.transaction);
         setOperation(decodedToken.operation);
 
-    }, [ idTransaction ])
-    
+    }, [ id_transaction ])
+
+    console.log('operation, transaction', operation, transaction);
+
     if (!(!error && (transaction && transaction.status === Transaction.status.PENDING && transaction.isOperating === true))) return <CheckoutError />;
 
     return (
