@@ -1,7 +1,3 @@
 FROM node:10-alpine
 
-WORKDIR /api
-
 RUN npm install -g nodemon
-
-EXPOSE 3000

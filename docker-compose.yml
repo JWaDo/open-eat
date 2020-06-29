@@ -42,6 +42,17 @@ services:
             - client
             - mongo
             - db
+    psp:
+        build: 
+            context: ./
+            dockerfile: Dockerfile.api  # Build based on the same Dockerfile as the api
+        container_name: psp
+        working_dir: '/psp'
+        volumes:
+            - './psp/:/psp/'
+        command: 'nodemon -L ./transpiled/index.js'
+        ports:
+            - '9000:9000'
 
     mongo:
         image: mongo
