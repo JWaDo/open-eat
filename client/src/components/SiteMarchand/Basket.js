@@ -6,15 +6,30 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+import Slide from '@material-ui/core/Slide';
+
 import listings from '../../config/listings'
+
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+    container: {
+        padding: theme.spacing(3)
+    },  
     root: {
       maxWidth: 345,
+      minHeight: 500,
       margin: "0.5rem",
+    },
+    selectedCard: {
+        border: `2px solid ${theme.palette.primary.main}`
     },
     media: {
       height: 280,
@@ -27,18 +42,31 @@ const useStyles = makeStyles({
         justifyContent: "space-around",
         flexWrap: "wrap"
     },
-    price: {
-        margin: "2rem"
-    },
     total: {
         textTransform: 'uppercase',
         margin: "1rem",
     },
+}));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
   });
 
 function Basket() {
 
+    // Nom, prénom, mail + model
+
+    const [open, setOpen] = useState(false);
     const [Listings, setListings] = useState(listings);
+    
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [email, setEmail] = useState("");
+    const [billingAddress, setBillingAddress] = useState("");
+    const [deliveryAddress, setDeliveryAddress] = useState("");
+    
+
+
     const [total, setTotal] = useState(0);
     const classes = useStyles();
 
@@ -47,15 +75,36 @@ function Basket() {
             const { quantity, price } = current;
             return accumulator + (quantity > 0 ? quantity * price : 0)
         }, 0));
-    }, [Listings])
+    }, [Listings]);
+    
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+    
 
     const handleConfirm = () => {
-        alert("Your total is price is" + total);
-        return Listings.filter(listing => listing.quantity !== 0); 
+        const basket = Listings.filter(listing => listing.quantity !== 0)
+        const total = basket.reduce((accumulator, current) => {
+            return current.price * current.quantity
+        }, 0) 
+
+        console.log({
+            name,
+            surname,
+            email,
+            billingAddress,
+            deliveryAddress,
+            basket,
+            total
+        })
     }
 
     return (
-        <div>
+        <div className={classes.container}>
             <form>
                 <Grid 
                     container
@@ -164,7 +213,7 @@ function Basket() {
                             variant="contained"
                             size="large"
                             disabled={total === 0}
-                            onClick={handleConfirm}
+                            onClick={handleOpen}
                         >
                             Confirm my order
                         </Button>
@@ -173,8 +222,68 @@ function Basket() {
                
             </form>
 
-
-            
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Order confirmation</DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                    To confirm your order, you have to fill the fields below
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    type="text"
+                    fullWidth
+                />
+                <TextField
+                    margin="dense"
+                    id="surname"
+                    label="Surnanme"
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
+                    type="text"
+                    fullWidth
+                />
+                <TextField
+                    margin="dense"
+                    id="email"
+                    label="Email Address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    fullWidth
+                />
+                <TextField
+                    margin="dense"
+                    id="billingAddress"
+                    label="Billing Address"
+                    value={billingAddress}
+                    onChange={(e) => setBillingAddress(e.target.value)}
+                    type="text"
+                    fullWidth
+                />
+                <TextField
+                    margin="dense"
+                    id="deliveryAddress"
+                    label="Delivery Address"
+                    value={deliveryAddress}
+                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                    type="text"
+                    fullWidth
+                />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleConfirm} color="primary">
+                    Confirm
+                </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }

@@ -8,6 +8,10 @@ import SiteMarchand from '../pages/SiteMarchand';
 import AuthPage from '../pages/AuthPage';
 import EmailValidationPage from '../pages/EmailValidationPage';
 import CheckoutPage from '../pages/CheckoutPage';
+import CustomerPage from '../pages/CustomerPage';
+import OrderPage from '../pages/OrderPage';
+import SettingsPage from '../pages/SettingsPage';
+import OrderDetails from '../pages/OrderDetailsPage';
 
 // Routes
 export default [
@@ -57,8 +61,34 @@ export default [
         private: false,
         component: SiteMarchand,
     },
-
-     
+    {
+        name: 'CustomerPage',
+        path: '/site-marchand/customer',
+        exact: true,
+        private: false,
+        component: CustomerPage,
+    },
+    {
+        name: 'OrdersPage',
+        path: '/site-marchand/traders/orders',
+        exact: true,
+        private: false,
+        component: OrderPage,
+    },    
+    {
+        name: 'SettingsPage',
+        path: '/site-marchand/traders/settings',
+        exact: true,
+        private: false,
+        component: SettingsPage,
+    },    
+    {
+        name: 'OrdersDetailsPage',
+        path: '/site-marchand/traders/orders/:id',
+        exact: true,
+        private: false,
+        component: OrderDetails,
+    },    
 
 
     /**

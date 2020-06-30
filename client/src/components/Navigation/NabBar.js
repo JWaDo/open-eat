@@ -14,6 +14,8 @@ import Box from '@material-ui/core/Box';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
 import StoreIcon from '@material-ui/icons/Store';
+import roles from '../../configs/roles';
+import { navigate } from '../../routes';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -21,24 +23,70 @@ const useStyles = makeStyles(theme => ({
     },
     shopLogo: {
         margin: theme.spacing(2)
+    },
+    homePageLink: {
+        cursor: 'pointer'
     }
 }));
 
 
-const NavBar = () => {
-
+const NavBar = ({role, selectedItem, setSelectedItem}) => {
+    
     const classes = useStyles();
+
+    const handleChange = (event, newValue) => {
+        setSelectedItem(newValue);
+      };
 
     return (
         <>
             <AppBar position="static">
                 <Toolbar>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                    >
+                        <Grid
+                            container
+                            items
+                            xs={4}
+                            direction="row"
+                            justify="flex-start"
+                            alignItems="center"
+                            className={classes.homePageLink}
+                            onClick={() => navigate.push("SiteMarchandPage")}
+                        >
+                            <StoreIcon className={classes.shopLogo} />
+                            <Typography variant="h6" className={classes.title}>Mario Karl Shop</Typography>
+                        </Grid>
 
-                    <Hidden mdDown>
-                        <StoreIcon className={classes.shopLogo} />
-                        <Typography variant="h6" className={classes.title}>Mario Karl Shop</Typography>
-                    </Hidden> 
-
+                        <Grid
+                            container
+                            items
+                            xs={4}
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
+                        >
+                            { role === roles.TRADER && 
+                                <Tabs value={selectedItem} onChange={handleChange}>
+                                    <Tab label={"Orders"} onClick={() => navigate.push("OrdersPage")} />
+                                    <Tab label={"Settings"} onClick={() => navigate.push("SettingsPage")}/>
+                                </Tabs>
+                            }
+                        </Grid>
+                        <Grid
+                            container
+                            items
+                            xs={4}
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
+                        >
+                        </Grid>
+                    </Grid>
                 </Toolbar>
             </AppBar>
         </>
