@@ -17,8 +17,8 @@ function Header({ username, logout, ...props}) {
     return (
         <React.Fragment>
             <HideOnScroll {...props}>
-                <AppBar color='secondary'>
-                    <Toolbar>
+                <AppBar color='secondary' style={{zIndex: 100}}>
+                    <Toolbar disableGutters>
                         <Container maxWidth='lg'>
                             <Box
                                 width='100%'
@@ -46,6 +46,7 @@ function Header({ username, logout, ...props}) {
                     </Toolbar>
                 </AppBar>
             </HideOnScroll>
+            <Toolbar/>
         </React.Fragment>
     )
 }

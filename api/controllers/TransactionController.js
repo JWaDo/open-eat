@@ -15,7 +15,7 @@ TransactionController.cGet = (req, res) => {
     
     const filters = user.type === 'admin' ? {} : { where: { UserId: user.id } };
     
-    Transaction.findAll({ ...filters, include: [ { model: Operation } ] }).then(transactions => {
+    Transaction.findAll(filters).then(transactions => {
         res.status(200).json({
             success: true,
             transactions

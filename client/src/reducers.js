@@ -1,6 +1,7 @@
 // // Import reducers here
 import counterReducer from './components/CounterExample/reducer';
 import authReducer from './components/BO/Auth/reducer';
+import transactionsReducer from './components/BO/Transactions/reducer';
 
 function combineReducers(reducers) {
     return function (state = {}, action) {
@@ -15,4 +16,5 @@ export default combineReducers({
     //
     auth: authReducer,
     counter: counterReducer,
+    transactions: transactionsReducer,
 });

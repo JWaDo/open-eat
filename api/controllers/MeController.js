@@ -53,8 +53,15 @@ MeController.createRefundIntent = (req, res) => {
 
                         const paymentToken = JWT.create({
                             type: 'checkout',
-                            operation: operationToProcess,
-                            transaction: trans.toJSON(),
+                            operation: {
+                                id: operationToProcess.id,
+                                amount: operationToProcess.amount,
+                                TransactionId: operationToProcess.TransactionId,
+                                type: operationToProcess.type
+                            },
+                            transaction: {
+                                id: trans.get('id'),
+                            },
                         });
                         
                         const transaction = {
@@ -86,8 +93,15 @@ MeController.createTransactionIntent = (req, res) => {
 
                         const paymentToken = JWT.create({
                             type: 'checkout',
-                            operation: operationToProcess,
-                            transaction: trans.toJSON(),
+                            operation: {
+                                id: operationToProcess.id,
+                                amount: operationToProcess.amount,
+                                TransactionId: operationToProcess.TransactionId,
+                                type: operationToProcess.type
+                            },
+                            transaction: {
+                                id: trans.get('id'),
+                            },
                         });
                         
                         const transaction = {

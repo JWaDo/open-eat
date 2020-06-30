@@ -51,7 +51,7 @@ function CheckoutForm({ checkoutInfo, checkoutToken }) {
             ...operation,
             card,
         };
-
+        isProcessing(true);
         // Send the paiement request
         request.post(`${URL_API}/transactions/${operation.TransactionId}/operations`, operationToProcess, { 'Authorization': `Bearer ${checkoutToken}` })
             .then(data => {
@@ -60,8 +60,9 @@ function CheckoutForm({ checkoutInfo, checkoutToken }) {
                 } else {
                     return navigate.replace("CheckoutPage", { token: 'error' });
                 }
+                isProcessing(false);
             }) // TODO: Do something with the data
-            .catch(err => console.error('error', err));
+            .catch(err => navigate.replace("CheckoutPage", { token: 'error' }));
     }
 
     const onCancel = e => {
