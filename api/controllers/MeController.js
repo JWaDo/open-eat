@@ -66,7 +66,7 @@ MeController.createRefundIntent = (req, res) => {
                         
                         const transaction = {
                             ...trans.toJSON(),
-                            checkoutForm: `http://localhost:3001/checkout/${paymentToken}`,
+                            checkoutForm: `http://localhost:3000/checkout/${paymentToken}`,
                         };
                         
                         return res.status(200).json({ success: true, transaction });
@@ -106,7 +106,7 @@ MeController.createTransactionIntent = (req, res) => {
                         
                         const transaction = {
                             ...trans.toJSON(),
-                            checkoutForm: `http://localhost:3001/checkout/${paymentToken}`,
+                            checkoutForm: `http://localhost:3000/checkout/${paymentToken}`,
                         };
                         
                         return res.status(200).json({ success: true, transaction });
