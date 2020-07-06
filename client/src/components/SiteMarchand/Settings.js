@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { navigate } from '../../routes';
+import { useSelector } from '../../store';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -32,7 +34,6 @@ const useStyles = makeStyles(theme => ({
 function Settings() {
 
     const classes = useStyles();
-
     const [token, setToken] = useState("");
     const [secret, setSecret] = useState("");
 
@@ -63,6 +64,14 @@ function Settings() {
                 >
                     your credentials
                 </Typography>
+                <Button
+                    className={classes.title}
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => navigate.push("DashboardPage")}
+                >
+                    Get my credentials
+                </Button>
                 <form 
                     noValidate
                     autoComplete="off"
