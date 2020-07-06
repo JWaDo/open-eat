@@ -14,10 +14,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Slide from '@material-ui/core/Slide';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 import listings from '../../config/listings'
 
 import { makeStyles } from '@material-ui/core/styles';
+import { TvRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -27,6 +29,7 @@ const useStyles = makeStyles(theme => ({
       maxWidth: 345,
       minHeight: 500,
       margin: "0.5rem",
+      width: '100%'
     },
     selectedCard: {
         border: `2px solid ${theme.palette.primary.main}`
@@ -64,10 +67,10 @@ function Basket() {
     const [email, setEmail] = useState("");
     const [billingAddress, setBillingAddress] = useState("");
     const [deliveryAddress, setDeliveryAddress] = useState("");
+    const [total, setTotal] = useState(0);
+    const [loaded, setLoaded] = useState(false);
     
 
-
-    const [total, setTotal] = useState(0);
     const classes = useStyles();
 
     useEffect(() => {
@@ -76,6 +79,10 @@ function Basket() {
             return accumulator + (quantity > 0 ? quantity * price : 0)
         }, 0));
     }, [Listings]);
+
+    useEffect(() => {
+        handleImageLoad();
+    },[]);
     
     const handleOpen = () => {
         setOpen(true);
@@ -84,6 +91,10 @@ function Basket() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleImageLoad = () => {
+        setLoaded(true);
+    }
     
 
     const handleConfirm = () => {
@@ -123,16 +134,29 @@ function Basket() {
                             md={3}
                         >
                             <Card className={classes.root}>
-                                <CardMedia
-                                className={classes.media}
-                                image={listing.image}
-                                />
+                                { loaded ?
+                                    <CardMedia
+                                    className={classes.media}
+                                    image={listing.image}
+                                    /> 
+                                :
+                                    <Skeleton animation="wave" variant="rect" className={classes.media} />
+                                }       
                                 <CardContent>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    {listing.name} - {listing.price}€
+                                    { loaded ?
+                                        `${listing.name} - ${listing.price}€`
+                                    :
+                                        <Skeleton animation="wave"/>
+                                    }
+                                    
                                 </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    {listing.description}
+                                <Typography variant="body2" color="textSecondary" component="h5">
+                                    { loaded ?
+                                        `${listing.description}`
+                                    :
+                                        <Skeleton animation="wave"/>
+                                    }
                                 </Typography>
                                 </CardContent>
                                 <CardActions className={classes.cardActions}>

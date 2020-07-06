@@ -5,12 +5,17 @@ import { Paper, makeStyles } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -43,8 +48,22 @@ const useStyles = makeStyles(theme => ({
 function OrderDetails(props) {
 
     const [selectedItem, setSelectedItem] = useState(0);
+    const [amount, setAmount] = useState("");
+    const [open, setOpen] = useState(false);
     const classes = useStyles();
     const id = props.match.params.id;
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleConfirm = () => {
+        console.log("confirmed")
+    }
 
     const mockDetails = {
         basket: [
@@ -206,6 +225,33 @@ function OrderDetails(props) {
                         <Button fullWidth variant="contained" color="primary" size="large">Refund</Button>
                     </Grid>
                 </Grid>
+                
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Order confirmation</DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                    To confirm your order, you have to fill the fields below
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="amount"
+                    label="Amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    type="text"
+                    fullWidth
+                />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleConfirm} color="primary">
+                    Confirm
+                </Button>
+                </DialogActions>
+            </Dialog>
             </Paper>
         </>
     )
