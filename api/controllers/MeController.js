@@ -8,7 +8,7 @@ class MeController {};
 
 MeController.getTransactions = (req, res) => {
 
-    const { clientToken, clientSecret } = req.query;
+    const { clientToken, clientSecret } = req.user;
     
     const filters = { where: { '$User.clientToken$': clientToken, '$User.clientSecret$': clientSecret }, order: [['id', 'DESC']], include: [ { model: Operation }, { model: User } ] };
     
