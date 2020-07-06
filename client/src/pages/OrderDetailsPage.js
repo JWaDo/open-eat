@@ -50,8 +50,25 @@ function OrderDetails(props) {
     const [selectedItem, setSelectedItem] = useState(0);
     const [amount, setAmount] = useState("");
     const [open, setOpen] = useState(false);
+    const [transaction, setTransaction] = useState([]);
     const classes = useStyles();
-    const id = props.match.params.id;
+    const id = parseInt(props.match.params.id);
+
+     useEffect(() => {
+        const secret = localStorage.getItem('secret');
+        const token = localStorage.getItem('token');
+        const credentials = `${token}:${secret}`;
+
+        fetch('http://localhost:8080/me/transactions', {
+            method: 'GET',
+            headers: {
+                Authorization: `Basic ${btoa(credentials)}`
+            }
+        }).then(data => data.json())
+          .then(formatedOrders => {
+            setTransaction(formatedOrders.transactions.find(t => t.id === id));
+          })
+    }, []);
 
     const handleOpen = () => {
         setOpen(true);
@@ -63,32 +80,6 @@ function OrderDetails(props) {
 
     const handleConfirm = () => {
         console.log("confirmed")
-    }
-
-    const mockDetails = {
-        basket: [
-            {
-                name: "Blabla je suis une description",
-                quantity: 13,
-                price: 29,
-            },
-            {
-                name: "Blabla je suis une description",
-                quantity: 13,
-                price: 29,
-            },
-            {
-                name: "Blabla je suis une description",
-                quantity: 13,
-                price: 29,
-            }
-        ],
-        name: "Charles",
-        firstname: "Van Hamme",
-        billingAdress: "4 avennue des lauriers 92700 Colombes",
-        deliveryAdress: "4 avennue des lauriers 92700 Colombes",
-        email: 'charles.vanhamme@gmail.com',
-        total: 1587
     }
 
     useEffect(() => {
@@ -105,6 +96,7 @@ function OrderDetails(props) {
                 setSelectedItem={setSelectedItem}
             />
             <Paper className={classes.container}>
+                { console.log(transaction) }
                 <Typography
                         className={classes.title}
                         variant="h3"
@@ -125,8 +117,8 @@ function OrderDetails(props) {
                         xs="12"
                         md="4"
                     >
-                        <Typography className={classes.informationTitle} variant="h6">Name</Typography>
-                        <Typography variant="body">{mockDetails.name}</Typography>
+                        <Typography className={classes.informationTitle} variant="h6">Lastname</Typography>
+                        <Typography variant="body">{transaction.customer && transaction.customer.lastname}</Typography>
                     </Grid>
 
                     <Grid
@@ -136,7 +128,7 @@ function OrderDetails(props) {
                         md="4"
                     >
                         <Typography className={classes.informationTitle} variant="h6">Firstname</Typography>
-                        <Typography variant="body">{mockDetails.firstname}</Typography>
+                        <Typography variant="body">{transaction.customer && transaction.customer.firtsname}</Typography>
                     </Grid>
 
                     <Grid
@@ -146,7 +138,7 @@ function OrderDetails(props) {
                         md="4"
                     >
                         <Typography className={classes.informationTitle} variant="h6">Total</Typography>
-                        <Typography variant="body">{mockDetails.total}</Typography>
+                        <Typography variant="body">{transaction.total}</Typography>
                     </Grid>
 
                     <Grid
@@ -156,7 +148,7 @@ function OrderDetails(props) {
                         md="4"
                     >
                         <Typography className={classes.informationTitle} variant="h6">Email</Typography>
-                        <Typography variant="body">{mockDetails.email}</Typography>
+                        <Typography variant="body">{transaction.customer && transaction.customer.email}</Typography>
                     </Grid>
                     
                     <Grid
@@ -166,7 +158,7 @@ function OrderDetails(props) {
                         md="4"
                     >
                         <Typography className={classes.informationTitle} variant="h6">Billing adress</Typography>
-                        <Typography variant="body">{mockDetails.billingAdress}</Typography>
+                        <Typography variant="body">{transaction.billingAddress}</Typography>
                     </Grid>
 
                     
@@ -177,7 +169,7 @@ function OrderDetails(props) {
                         md="4"
                     >
                         <Typography className={classes.informationTitle} variant="h6">Delivery adress</Typography>
-                        <Typography variant="body">{mockDetails.deliveryAdress}</Typography>
+                        <Typography variant="body">{transaction.deliveryAdress ? transaction.deliveryAdress : transaction.billingAddress}</Typography>
                     </Grid>
                 </Grid>
                 
@@ -198,12 +190,12 @@ function OrderDetails(props) {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {mockDetails.basket.map((mock) => (
-                            <TableRow key={mock.name}>
-                            <TableCell align="center">{mock.name}</TableCell>
-                            <TableCell align="center">{mock.quantity}</TableCell>
-                            <TableCell align="center">{mock.price}</TableCell>
-                            <TableCell align="center">{ ((mock.quantity) * (mock.price)) }</TableCell>
+                        {transaction.basket && transaction.basket.map((line) => (
+                            <TableRow key={line.name}>
+                            <TableCell align="center">{line.name}</TableCell>
+                            <TableCell align="center">{line.quantity}</TableCell>
+                            <TableCell align="center">{line.price}</TableCell>
+                            <TableCell align="center">{ ((line.quantity) * (line.price)) }</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>

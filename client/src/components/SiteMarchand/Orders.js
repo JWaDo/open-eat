@@ -79,7 +79,7 @@ function Orders() {
                 Authorization: `Basic ${btoa(credentials)}`
             }
         }).then(data => data.json())
-          .then(formatedOrders => setOrders(formatedOrders))
+          .then(formatedOrders => setOrders(formatedOrders.transactions))
     }, []);
 
     return (
@@ -93,25 +93,27 @@ function Orders() {
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                 <TableRow>
-                    <TableCell align="center">Name</TableCell>
-                    <TableCell align="center">Surname</TableCell>
+                    <TableCell align="center">Firstname</TableCell>
+                    <TableCell align="center">Lastname</TableCell>
                     <TableCell align="center">Email</TableCell>
                     <TableCell align="center">Total</TableCell>
+                    <TableCell align="center">Currency</TableCell>
                     <TableCell align="center">See</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
                 { console.log(orders) }
-                {rows.map((row) => (
-                    <TableRow key={row.name}>
-                    <TableCell align="center">{row.name}</TableCell>
-                    <TableCell align="center">{row.surname}</TableCell>
-                    <TableCell align="center">{row.email}</TableCell>
-                    <TableCell align="center">{row.total}</TableCell>
+                {orders.map((order) => (
+                    <TableRow key={order.id}>
+                    <TableCell align="center">{order.customer.firtsname}</TableCell>
+                    <TableCell align="center">{order.customer.lastname}</TableCell>
+                    <TableCell align="center">{order.customer.email}</TableCell>
+                    <TableCell align="center">{order.total}</TableCell>
+                    <TableCell align="center">{order.currency}</TableCell>
                     <TableCell align="center">
                         <VisibilityIcon 
                             className={classes.eye}
-                            onClick={() => navigate.push("OrdersDetailsPage", {id: 1}) }
+                            onClick={() => navigate.push("OrdersDetailsPage", {id: order.id}) }
                         />
                     </TableCell>
                     </TableRow>
