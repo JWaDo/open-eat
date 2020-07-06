@@ -7,7 +7,7 @@ class Transaction extends Model {}
 
 Transaction.init({
     basket: {
-        type: DataTypes.STRING, 
+        type: DataTypes.TEXT, 
         get: function() {
             return JSON.parse(this.getDataValue('basket'));
         }, 

@@ -113,7 +113,7 @@ function Basket() {
     const handleConfirm = () => {
         const basket = Listings.filter(listing => listing.quantity !== 0)
         const total = basket.reduce((accumulator, current) => {
-            return current.price * current.quantity
+            return accumulator + (current.price * current.quantity)
         }, 0);
 
         const secret = localStorage.getItem('secret');
