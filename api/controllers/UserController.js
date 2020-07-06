@@ -116,6 +116,10 @@ UserController.login = (req, res) => {
                 id: user.id,
                 firstname: user.firstname,
                 lastname: user.lastname,
+                credentials: {
+                    user: user.clientToken,
+                    password: user.clientSecret,
+                },
             });
             // Valid
             res.status(200).json({ success: true, token });

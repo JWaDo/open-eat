@@ -1,5 +1,5 @@
-import React from 'react'
-import { AppBar, Toolbar, Container, Box, Typography, IconButton, Button, useScrollTrigger, Slide } from '@material-ui/core'
+import React, { useState } from 'react'
+import { AppBar, Toolbar, Container, Box, Typography, IconButton, Button, useScrollTrigger, Slide, Dialog } from '@material-ui/core'
 import { AccountBox as AccountBoxIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons'
 
 
@@ -13,7 +13,10 @@ function HideOnScroll({ children }) {
     );
 }
 
-function Header({ username, logout, ...props}) {
+function Header({ username, credentials, logout, ...props}) {
+
+    const [showCredentials, setShowCredentials] = useState(false);
+    
     return (
         <React.Fragment>
             <HideOnScroll {...props}>
@@ -25,7 +28,7 @@ function Header({ username, logout, ...props}) {
                                 display='flex' justifyContent='space-between' alignItems='center'
                             >
                                 <Box display='flex' alignItems='center'>
-                                    <IconButton>
+                                    <IconButton onClick={() => setShowCredentials(true)}>
                                         <AccountBoxIcon color='primary' />
                                     </IconButton>
                                     <Typography color='primary'>
@@ -47,6 +50,29 @@ function Header({ username, logout, ...props}) {
                 </AppBar>
             </HideOnScroll>
             <Toolbar/>
+            <Dialog open={showCredentials} onClose={() => setShowCredentials(false)}>
+                <Box p={3}>
+                    <Box my={2}>
+                        <Typography component='p' variant='h6' color='primary'>
+                            Client token
+                        </Typography>
+                        <Typography component='p'>
+                            {credentials.user}
+                        </Typography>
+                        <Typography component='p' variant='h6' color='primary'>
+                            Client secret
+                        </Typography>
+                        <Typography component='p'>
+                            {credentials.password}
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Button fullWidth variant='contained' color='primary'>
+                            Renew credentials
+                        </Button>
+                    </Box>
+                </Box>
+            </Dialog>
         </React.Fragment>
     )
 }

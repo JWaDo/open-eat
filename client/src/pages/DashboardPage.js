@@ -12,6 +12,7 @@ function DashboardPage() {
         <React.Fragment>
             <Header
                 username={`${user.firstname} ${user.lastname}`}
+                credentials={user.credentials}
                 logout={logout}
             />
 
