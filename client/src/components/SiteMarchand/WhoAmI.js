@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundImage: `url(${salesLogo})`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
+    },
+    WhoAmIButton: {
+        textAlign: 'center'
     }
   }));
 
@@ -34,6 +37,12 @@ function WhoAmI() {
             className={classes.container}
         >
         
+            <Grid 
+                item
+                xs={12}
+                md={2}
+                className={classes.WhoAmIButton}
+            >
                 <Button
                     variant="contained"
                     color="primary"
@@ -45,9 +54,16 @@ function WhoAmI() {
                 >
                     {roles.CUSTOMER}
                 </Button>
+            </Grid>
 
+            <Grid 
+                item
+                xs={12}
+                md={2}
+                className={classes.WhoAmIButton}
+            >
                 <Button
-                    variant="outlined"
+                    variant="contained"
                     color="secondary"
                     size="large"
                     className={classes.button}
@@ -57,10 +73,17 @@ function WhoAmI() {
                 >
                     {roles.TRADER}
                 </Button>
-                            
+            </Grid>
+
+            <Grid 
+                item
+                xs={12}
+                md={2}
+                className={classes.WhoAmIButton}
+            >
                 <Button
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     size="large"
                     className={classes.button}
                     onClick={() => {
@@ -68,7 +91,8 @@ function WhoAmI() {
                     }}
                 >
                     {roles.ADMINISTRATOR}
-                </Button>            
+                </Button>         
+            </Grid>
         </Grid>
     )
 }
