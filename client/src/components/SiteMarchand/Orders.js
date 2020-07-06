@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -65,7 +65,22 @@ const rows = [
 
 function Orders() {
 
+    const [orders,setOrders] = useState([]);
     const classes = useStyles();
+
+    useEffect(() => {
+        const secret = localStorage.getItem('secret');
+        const token = localStorage.getItem('token');
+        const credentials = `${token}:${secret}`;
+
+        fetch('http://localhost:8080/me/transactions', {
+            method: 'GET',
+            headers: {
+                Authorization: `Basic ${btoa(credentials)}`
+            }
+        }).then(data => data.json())
+          .then(formatedOrders => setOrders(formatedOrders))
+    }, []);
 
     return (
         <TableContainer className={classes.container} component={Paper}>
@@ -86,6 +101,7 @@ function Orders() {
                 </TableRow>
                 </TableHead>
                 <TableBody>
+                { console.log(orders) }
                 {rows.map((row) => (
                     <TableRow key={row.name}>
                     <TableCell align="center">{row.name}</TableCell>

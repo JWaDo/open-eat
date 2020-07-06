@@ -6,6 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,6 +24,10 @@ import listings from '../../config/listings'
 import { makeStyles } from '@material-ui/core/styles';
 import { TvRounded } from '@material-ui/icons';
 import Brand from '../Global/Brand';
+import { InputLabel, Select } from '@material-ui/core';
+import TransactionConfig from '../../config/transactions.config';
+
+const Currencies = TransactionConfig.currencies;
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -72,6 +79,7 @@ function Basket() {
     const [email, setEmail] = useState("");
     const [billingAddress, setBillingAddress] = useState("");
     const [deliveryAddress, setDeliveryAddress] = useState("");
+    const [currency,setCurrency] = useState("");
     const [total, setTotal] = useState(0);
     const [loaded, setLoaded] = useState(false);
     
@@ -106,17 +114,35 @@ function Basket() {
         const basket = Listings.filter(listing => listing.quantity !== 0)
         const total = basket.reduce((accumulator, current) => {
             return current.price * current.quantity
-        }, 0) 
+        }, 0);
 
-        console.log({
-            name,
-            surname,
-            email,
-            billingAddress,
-            deliveryAddress,
-            basket,
-            total
-        })
+        const secret = localStorage.getItem('secret');
+        const token = localStorage.getItem('token');
+        const credentials = `${token}:${secret}`;
+
+
+        fetch('http://localhost:8080/me/transactions', {
+            method: 'POST',
+            headers: {
+                Authorization: `Basic ${btoa(credentials)}`,
+                'Content-Type': "Application/json",
+            },
+            body: JSON.stringify({
+                customer: {
+                    firtsname: name,
+                    lastname: surname,
+                    email,
+                },
+                billingAddress,
+                deliveryAddress,
+                basket,
+                total,
+                currency,
+            })
+        }).then(data => data.json())
+          .then(formatedData => {
+              if(formatedData.success) window.location.href = formatedData.transaction.checkoutForm;
+          });
     }
 
     return (
@@ -229,6 +255,22 @@ function Basket() {
                     >
                         <Typography variant="h3">{total} €</Typography>
                     </Grid>
+                    
+                    <Box
+                        width="250px"
+                    >
+                        <FormControl fullWidth required>
+                            <InputLabel id="select-label">Currency</InputLabel>
+                            <Select
+                                labelId="select-label"
+                                id="select"
+                                onChange={(e) => setCurrency(e.target.value)}
+                                name='currency'
+                            >
+                                {Currencies.map(curr => <MenuItem key={curr.currency} value={curr.currency}>{curr.name}</MenuItem>)}
+                            </Select>
+                        </FormControl>
+                    </Box>
                     <Grid
                         container
                         item
@@ -264,7 +306,7 @@ function Basket() {
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="Name"
+                    label="Firstname"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     type="text"
@@ -273,7 +315,7 @@ function Basket() {
                 <TextField
                     margin="dense"
                     id="surname"
-                    label="Surnanme"
+                    label="Lastname"
                     value={surname}
                     onChange={(e) => setSurname(e.target.value)}
                     type="text"
