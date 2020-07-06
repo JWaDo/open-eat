@@ -16,13 +16,6 @@ import OrderDetails from '../pages/OrderDetailsPage';
 // Routes
 export default [
     {
-        name: 'HomePage',
-        path: '/',
-        exact: true,
-        private: false,
-        component: HomePage,
-    },
-    {
         name: 'AuthPage',
         path: '/auth/:view',
         exact: true,
@@ -56,7 +49,7 @@ export default [
      */
     {
         name: 'SiteMarchandPage',
-        path: '/site-marchand',
+        path: '/',
         exact: true,
         private: false,
         component: SiteMarchand,
