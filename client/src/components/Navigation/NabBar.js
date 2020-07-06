@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import StoreIcon from '@material-ui/icons/Store';
 import roles from '../../configs/roles';
 import { navigate } from '../../routes';
+import Brand from '../Global/Brand';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -58,8 +59,7 @@ const NavBar = ({role, selectedItem, setSelectedItem}) => {
                             className={classes.homePageLink}
                             onClick={() => navigate.push("SiteMarchandPage")}
                         >
-                            <StoreIcon className={classes.shopLogo} />
-                            <Typography variant="h6" className={classes.title}>Mario Karl Shop</Typography>
+                            <Brand contrastText />
                         </Grid>
 
                         <Grid

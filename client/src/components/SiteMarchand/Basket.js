@@ -20,6 +20,7 @@ import listings from '../../config/listings'
 
 import { makeStyles } from '@material-ui/core/styles';
 import { TvRounded } from '@material-ui/icons';
+import Brand from '../Global/Brand';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
     cardActions: {
         justifyContent: "center",
+        margin: theme.spacing(3),
     },
     box: {
         display: "flex",
@@ -49,6 +51,9 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'uppercase',
         margin: "1rem",
     },
+    contentText: {
+        textAlign: 'center',
+    }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -164,6 +169,7 @@ function Basket() {
                                         size="medium" 
                                         color="primary"
                                         variant="text"
+                                        variant="contained"
                                         disabled={listing.quantity === 0}
                                         onClick={() => setListings(Listings.map(l => listing === l ? {...listing, quantity: listing.quantity - 1 } : l))}
                                     >
@@ -179,7 +185,7 @@ function Basket() {
                                     <Button 
                                         size="medium"
                                         color="primary"
-                                        variant="text"
+                                        variant="contained"
                                         onClick={() => setListings(Listings.map(l => listing === l ? {...listing, quantity: listing.quantity + 1 } : l))}
                                     >
                                         +
@@ -247,10 +253,12 @@ function Basket() {
             </form>
 
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Order confirmation</DialogTitle>
+                <DialogTitle id="form-dialog-title">
+                    <Brand />
+                </DialogTitle>
                 <DialogContent>
-                <DialogContentText>
-                    To confirm your order, you have to fill the fields below
+                <DialogContentText className={classes.contentText}>
+                    Confirm your order by filling the fields below
                 </DialogContentText>
                 <TextField
                     autoFocus
@@ -303,7 +311,7 @@ function Basket() {
                 <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={handleConfirm} color="primary">
+                <Button onClick={handleConfirm} color="primary" variant="contained">
                     Confirm
                 </Button>
                 </DialogActions>
