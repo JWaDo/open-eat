@@ -115,7 +115,7 @@ TransactionController.createOperation = (req, res) => {
         // Handle PSP errors
         req.on('error', (err) => {
             // Handle errors
-            ope.set('status', 'FAILED').save();
+            operation.set('status', 'FAILED').save();
         });
 
         req.end();
