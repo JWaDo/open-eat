@@ -27,7 +27,7 @@ MeController.getTransactions = (req, res) => {
 };
 
 MeController.createRefundIntent = (req, res) => {
-    const { clientToken, clientSecret } = req.query;
+    const { clientToken, clientSecret } = req.user;
     const { idTransaction } = req.params;
     const { amount } = req.body;
     
@@ -77,7 +77,7 @@ MeController.createRefundIntent = (req, res) => {
 
 MeController.createTransactionIntent = (req, res) => {
 
-    const { clientToken, clientSecret } = req.query;
+    const { clientToken, clientSecret } = req.user;
     
     User.findOne({ where: { clientSecret, clientToken, confirmed: true }}).then(user => {
         // Reject if no user found
