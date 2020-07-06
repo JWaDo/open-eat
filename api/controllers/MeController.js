@@ -27,7 +27,7 @@ MeController.getTransactions = (req, res) => {
 };
 
 MeController.createRefundIntent = (req, res) => {
-    const { clientToken, clientSecret } = req.query;
+    const { clientToken, clientSecret } = req.user;
     const { idTransaction } = req.params;
     const { amount } = req.body;
     
