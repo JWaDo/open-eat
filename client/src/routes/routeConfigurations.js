@@ -12,6 +12,8 @@ import CustomerPage from '../pages/CustomerPage';
 import OrderPage from '../pages/OrderPage';
 import SettingsPage from '../pages/SettingsPage';
 import OrderDetails from '../pages/OrderDetailsPage';
+import CheckoutConfirmedPage from '../pages/CheckoutConfirmedPage';
+import CheckoutCancelled from '../pages/CheckoutCancelled';
 
 // Routes
 export default [
@@ -81,6 +83,20 @@ export default [
         exact: true,
         private: false,
         component: OrderDetails,
+    },    
+    {
+        name: 'CheckoutConfirmedPage',
+        path: '/site-marchand/confirmed',
+        exact: true,
+        private: false,
+        component: CheckoutConfirmedPage,
+    },    
+    {
+        name: 'CheckoutCancelled',
+        path: '/site-marchand/cancelled',
+        exact: true,
+        private: false,
+        component: CheckoutCancelled,
     },    
 
 
