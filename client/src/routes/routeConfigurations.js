@@ -14,6 +14,7 @@ import SettingsPage from '../pages/SettingsPage';
 import OrderDetails from '../pages/OrderDetailsPage';
 import CheckoutConfirmedPage from '../pages/CheckoutConfirmedPage';
 import CheckoutCancelled from '../pages/CheckoutCancelled';
+import ChartsTraderPage from '../pages/ChartsTraderPage';
 
 // Routes
 export default [
@@ -83,6 +84,13 @@ export default [
         exact: true,
         private: false,
         component: OrderDetails,
+    },    
+    {
+        name: 'ChartsTraderPage',
+        path: '/site-marchand/traders/charts',
+        exact: true,
+        private: false,
+        component: ChartsTraderPage,
     },    
     {
         name: 'CheckoutConfirmedPage',

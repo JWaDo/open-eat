@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-import { AppBar, Toolbar, Container, Box, Typography, IconButton, Button, useScrollTrigger, Slide, Dialog } from '@material-ui/core'
+import { AppBar, Toolbar, Container, Box, Typography, IconButton, Button, useScrollTrigger, Slide, Dialog, Menu, MenuItem } from '@material-ui/core'
 import { AccountBox as AccountBoxIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { navigate } from '../../routes';
 
 
 function HideOnScroll({ children }) {
@@ -16,6 +19,11 @@ function HideOnScroll({ children }) {
 function Header({ username, credentials, logout, ...props}) {
 
     const [showCredentials, setShowCredentials] = useState(false);
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+      };
     
     return (
         <React.Fragment>
@@ -35,7 +43,14 @@ function Header({ username, credentials, logout, ...props}) {
                                         {username}
                                     </Typography>
                                 </Box>
-                                <Box>
+                               
+                                <Box display='flex' alignItems='center'>
+                                    <Box display='flex' alignItems='center'>
+                                        <Tabs>
+                                            <Tab label={"Dashboard"} onClick={() => navigate.push("DashboardPage")} />
+                                            <Tab label={"Charts"} onClick={() => navigate.push("ChartsTraderPage")} />
+                                        </Tabs>
+                                    </Box>
                                     <Button 
                                         variant='outlined' color='primary' size='small'
                                         endIcon={<ExitToAppIcon />}
