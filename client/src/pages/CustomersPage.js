@@ -1,9 +1,8 @@
 import React from 'react'
 import Header from '../components/BO/Header'
 import useAuth from '../components/BO/Auth/useAuth';
-import ChartsTrader from '../components/SiteMarchand/ChartsTrader';
 
-function DashboardPage() {
+function CustomersPage() {
 
     const [{ user }, { logout }] = useAuth();
 
@@ -15,11 +14,10 @@ function DashboardPage() {
                 logout={logout}
             />
 
-            <ChartsTrader />
+            Customer Page
 
         </React.Fragment>
     )
 }
 
-export default DashboardPage
-
+export default CustomersPage

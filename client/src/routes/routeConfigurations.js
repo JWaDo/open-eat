@@ -14,7 +14,8 @@ import SettingsPage from '../pages/SettingsPage';
 import OrderDetails from '../pages/OrderDetailsPage';
 import CheckoutConfirmedPage from '../pages/CheckoutConfirmedPage';
 import CheckoutCancelled from '../pages/CheckoutCancelled';
-import ChartsTraderPage from '../pages/ChartsTraderPage';
+import CustomersPage from '../pages/CustomersPage';
+import TransactionsPage from '../pages/TransactionsPage';
 
 // Routes
 export default [
@@ -38,6 +39,20 @@ export default [
         exact: true,
         private: true,
         component: DashboardPage,
+    },
+    {
+        name: 'TransactionsPage',
+        path: '/transactions',
+        exact: true,
+        private: true,
+        component: TransactionsPage,
+    },
+    {
+        name: 'CustomersPage',
+        path: '/customers',
+        exact: true,
+        private: true,
+        component: CustomersPage,
     },
     {
         name: 'CheckoutPage',
@@ -84,14 +99,7 @@ export default [
         exact: true,
         private: false,
         component: OrderDetails,
-    },    
-    {
-        name: 'ChartsTraderPage',
-        path: '/site-marchand/traders/charts',
-        exact: true,
-        private: false,
-        component: ChartsTraderPage,
-    },    
+    },
     {
         name: 'CheckoutConfirmedPage',
         path: '/site-marchand/confirmed',

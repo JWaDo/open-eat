@@ -1,12 +1,12 @@
 import React from 'react'
-import Header from '../components/BO/Header'
+import Header from '../components/BO/Header';
 import useAuth from '../components/BO/Auth/useAuth';
-import ChartsTrader from '../components/SiteMarchand/ChartsTrader';
+import TransactionsList from '../components/BO/Transactions/TransactionsList';
 
-function DashboardPage() {
+function TransactionsPage() {
 
     const [{ user }, { logout }] = useAuth();
-
+    
     return (
         <React.Fragment>
             <Header
@@ -15,11 +15,10 @@ function DashboardPage() {
                 logout={logout}
             />
 
-            <ChartsTrader />
+            <TransactionsList />
 
         </React.Fragment>
     )
 }
 
-export default DashboardPage
-
+export default TransactionsPage

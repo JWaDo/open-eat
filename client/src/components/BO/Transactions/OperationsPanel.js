@@ -87,7 +87,6 @@ const Operation = ({ operation, currency }) => {
                         {(operation.type === 'REFUND' && operation.status !== 'WAITING') && <Chip className={refund} size='small' label={`${operation.type} ${operation.amount}${currency}`} />}
                         {operation.status === 'WAITING' && <Chip className={waiting} size='small' label={`${operation.type} ${operation.amount}${currency}`} />}
                     </Box>
-
                     <Box width='100%' display='flex'>
                         {operation.status === 'COMPLETED' && <CreditCard card={operation.card} />}
                         {operation.status === 'WAITING' && (
