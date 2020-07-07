@@ -16,6 +16,9 @@ import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Basket from '../components/SiteMarchand/Basket';
+import Brand from '../components/Global/Brand';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -53,6 +56,7 @@ function OrderDetails(props) {
     const [transaction, setTransaction] = useState([]);
     const classes = useStyles();
     const id = parseInt(props.match.params.id);
+    const { enqueueSnackbar } = useSnackbar();
 
      useEffect(() => {
         const secret = localStorage.getItem('secret');
@@ -79,7 +83,28 @@ function OrderDetails(props) {
     };
 
     const handleConfirm = () => {
-        console.log("confirmed")
+        if(parseInt(amount) >= parseInt(transaction.total)) {
+            // Display snackbar to show error message
+            setOpen(false);
+            return enqueueSnackbar('Refund impossible due to too high amount', { autoHideDuration: 3000 });;
+        }
+        const token = localStorage.getItem('token');
+        const secret = localStorage.getItem('secret');
+        const credentials = `${token}:${secret}`;
+
+        fetch(`http://localhost:8080/me/transactions/${id}/refund`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Basic ${btoa(credentials)}`,
+                'Content-Type': "Application/json",
+            },
+            body: JSON.stringify({ amount }),
+        }).then(data => data.json())
+          .then(formatedData => {
+            if(formatedData.transaction) {
+                window.location.href = formatedData.transaction.checkoutForm;    
+            }
+          })
     }
 
     useEffect(() => {
@@ -95,8 +120,8 @@ function OrderDetails(props) {
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
             />
+            { console.log(transaction)}
             <Paper className={classes.container}>
-                { console.log(transaction) }
                 <Typography
                         className={classes.title}
                         variant="h3"
@@ -214,15 +239,17 @@ function OrderDetails(props) {
                         className={classes.informationContainer}
                         xs="12"
                     >
-                        <Button fullWidth variant="contained" color="primary" size="large">Refund</Button>
+                        <Button onClick={() => setOpen(true)} fullWidth variant="contained" color="primary" size="large">Refund</Button>
                     </Grid>
                 </Grid>
                 
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Order confirmation</DialogTitle>
+                <DialogTitle id="form-dialog-title">
+                    <Brand />
+                </DialogTitle>
                 <DialogContent>
                 <DialogContentText>
-                    To confirm your order, you have to fill the fields below
+                    To refund this order, please fill the field below
                 </DialogContentText>
                 <TextField
                     autoFocus

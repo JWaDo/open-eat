@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { navigate } from '../../routes';
-import { useSelector } from '../../store';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -36,11 +36,22 @@ function Settings() {
     const classes = useStyles();
     const [token, setToken] = useState("");
     const [secret, setSecret] = useState("");
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        localStorage.setItem('token', token)
-        localStorage.setItem('secret', secret)
+        const storedToken = localStorage.getItem('token');
+        const storedSecret = localStorage.getItem('secret');
+
+        if(storedToken === token && storedSecret === secret) {
+            return enqueueSnackbar("Les credentials soumis sont déjà enregistrés", {autoHideDuration: 3000});   
+        }
+
+        localStorage.setItem('token', token);
+        localStorage.setItem('secret', secret);
+        return enqueueSnackbar("Vos credentials ont été enregistrés", {autoHideDuration: 3000});   
+
+
     }
 
     useEffect(() => {
@@ -94,7 +105,15 @@ function Settings() {
                         value={secret}
                         onChange={(e) => setSecret(e.target.value)}
                     />
-                    <Button type="submit" color="primary" variant="contained" size="large" className={classes.input}>Confirm</Button>
+                    <Button 
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        size="large"
+                        className={classes.input}
+                    >
+                        Confirm
+                    </Button>
                 </form> 
             </Grid>
         </Paper>
