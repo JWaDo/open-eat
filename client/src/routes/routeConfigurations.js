@@ -3,6 +3,9 @@ import { Redirect } from 'react-router-dom';
 // import Pages
 import Notfound from '../pages/Notfound';
 import HomePage from '../pages/HomePage';
+import PrivatePage from '../pages/PrivatePage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
 
 // Routes
 export default [
@@ -15,6 +18,30 @@ export default [
         exact: true,
         private: false,
         component: HomePage,
+    },
+     /**
+     * Not found page
+     */
+    {
+        name: 'PrivatePage',
+        path: '/private-page',
+        exact: true,
+        private: true,
+        component: PrivatePage,
+    },
+    {
+        name: 'LoginPage',
+        path: '/login',
+        exact: true,
+        private: false,
+        component: LoginPage,
+    },
+    {
+        name: 'RegisterPage',
+        path: '/register',
+        exact: true,
+        private: false,
+        component: RegisterPage,
     },
     /**
      * Not found page

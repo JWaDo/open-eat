@@ -9,6 +9,7 @@ import { StoreProvider } from './store';
 import { StateInspector } from "reinspect"
 import { SnackbarProvider } from 'notistack';
 
+
 const theme = createMuiTheme(myCustomTheme);
 
 ReactDOM.render(
