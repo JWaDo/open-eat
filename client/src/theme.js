@@ -3,12 +3,12 @@
 export default {
     palette: {
         primary: {
-            main: "#3C5CA5",
+            main: "#dba100",
             contrastText: "#E9EFFF",
         }, 
         secondary: {
             main: "#E9EFFF",
-            contrastText: "#3C5CA5",
+            contrastText: "#dba100",
         },
         success: {
             main: '#32CD32',

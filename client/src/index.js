@@ -3,13 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import myCustomTheme from './theme';
 import { StoreProvider } from './store';
 import { StateInspector } from "reinspect"
 import { SnackbarProvider } from 'notistack';
-
-const theme = createMuiTheme(myCustomTheme);
+import CustomThemeProvider from './components/CustomThemeProvider';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,7 +17,7 @@ ReactDOM.render(
       <SnackbarProvider maxSnack={1} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} >
 
         {/* Provider material ui theming */}
-        <MuiThemeProvider theme={theme}>
+        <CustomThemeProvider>
           {/* Provider for store */}
           <StoreProvider>
 
@@ -29,7 +26,7 @@ ReactDOM.render(
 
           </StoreProvider>
           
-        </MuiThemeProvider>
+        </CustomThemeProvider>
       
       </SnackbarProvider>
 
@@ -39,4 +36,5 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-serviceWorker.unregister();
+// Start the service worker
+serviceWorker.register();

@@ -4,6 +4,7 @@ import history from './history';
 import './App.css';
 import routes from './routes/routeConfigurations';
 import PrivateRoute from './components/auth/PrivateRoute';
+import InstallAppBanner from './components/InstallAppBanner';
 
 const generateRoutes = () => routes.map((route, key) => (route.private === undefined || !!route.private) ?  
   <PrivateRoute 
@@ -22,6 +23,7 @@ function App() {
           {generateRoutes()}
 
         </Switch>
+        <InstallAppBanner />
       </Router>
   );
 }
