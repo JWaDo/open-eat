@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Listings from '../components/Listings';
+import Listings from '../components/Listings/Listings';
 import Users from '../firebase/collections/Users';
 import { Button } from '@material-ui/core';
 import { navigate } from '../routes';
@@ -18,8 +18,8 @@ function HomePage() {
     
     return (
         <div>
-            <Listings />
             <AppMenu isLoggedUser/>
+            <Listings />
             <img src={image} alt=""/>
         </div>
     );
