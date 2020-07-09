@@ -9,7 +9,6 @@ import { StoreProvider } from './store';
 import { StateInspector } from "reinspect"
 import { SnackbarProvider } from 'notistack';
 
-
 const theme = createMuiTheme(myCustomTheme);
 
 ReactDOM.render(
@@ -18,7 +17,7 @@ ReactDOM.render(
     <StateInspector>
     
       {/*  Provider for snackbar display ('notistack')  */}
-      <SnackbarProvider maxSnack={1} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+      <SnackbarProvider maxSnack={1} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} >
 
         {/* Provider material ui theming */}
         <MuiThemeProvider theme={theme}>

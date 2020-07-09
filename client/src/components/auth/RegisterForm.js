@@ -3,7 +3,7 @@ import { fireAuth } from '../../firebase/config';
 import { navigate } from '../../routes';
 
 
-function Auth() {
+function RegisterForm() {
     const [user, setUser] = useState({})
     
     const handleChange = (e) => {
@@ -33,6 +33,7 @@ function Auth() {
 
     return (
         <div>
+            RegisterForm
             <form method="post" onSubmit={handleSubmit}>
                 <input type="text" name="email" onChange={handleChange}/>
                 <input type="text"name="password" onChange={handleChange}/>
@@ -43,4 +44,4 @@ function Auth() {
     )
 }
 
-export default Auth
+export default RegisterForm;

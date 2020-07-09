@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
-import Auth from '../components/auth/Auth';
+import RegisterForm from '../components/auth/RegisterForm';
 import { fireAuth } from '../firebase/config';
 import { navigate } from '../routes';
 
 function RegisterPage() {
 
     useEffect(() => {
-        console.log(fireAuth.currentUser);
         if(fireAuth.currentUser) navigate.replace("HomePage");
     }, [])
 
     return (
         <div>
-            <Auth />
+            <RegisterForm />
         </div>
     )
 }
