@@ -9,6 +9,7 @@ import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
+import Avatar from '@material-ui/core/Avatar';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -19,7 +20,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useSnackbar } from 'notistack';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { fireAuth } from '../../firebase/config';
+import { fireAuth, fireStorage } from '../../firebase/config';
 import { navigate } from '../../routes';
 
 const useStyles = makeStyles((theme) => ({
@@ -86,6 +87,11 @@ const useStyles = makeStyles((theme) => ({
   },
   logButton: {
     margin: theme.spacing(2),
+  },
+  profile: {
+    display: "flex",
+    justifyContent: "center",
+    alignItem: "center",
   }
 }));
 
@@ -95,17 +101,26 @@ export default function AppMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isLoggedUser, setIsLoggedUser] = useState({});
-  
-
+  const [currentAvatar, setCurrentAvatar] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    // {console.log(Users.doc("tQ7I5EjtKGGd9Mluhvrf").get().then(data => console.log(data.data())))}
-    fireAuth.onAuthStateChanged(function(user) {
+    fireAuth.onAuthStateChanged((user) => {
         if (user) {
-            console.log(user);
-            setIsLoggedUser(!!user)
+            const { uid } = user.toJSON();
+            setCurrentUser(user.toJSON());
+            setIsLoggedUser(!!user);
+
+            fireStorage.ref("profilePicture")
+              .child(`pp_${uid}.jpg`)
+              .getDownloadURL()
+              .then(img => {
+                setCurrentAvatar(img)
+            });
+
+            setIsLoggedUser(!!user);
         } else {
             setIsLoggedUser(user);
         }
@@ -113,7 +128,7 @@ export default function AppMenu() {
 }, [isLoggedUser]);
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    navigate.push("ProfilePage")
   };
 
   const handleMobileMenuClose = () => {
@@ -130,20 +145,6 @@ export default function AppMenu() {
   };
 
   const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -156,6 +157,30 @@ export default function AppMenu() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      { isLoggedUser &&
+        <MenuItem 
+          onClick={handleProfileMenuOpen}
+          className={classes.profile}
+        >
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            { currentAvatar &&
+              <>
+                <Avatar 
+                    alt="Current User"
+                    src={currentAvatar}
+                    className={classes.small}
+                />
+              </>
+            }
+          </IconButton>
+        </MenuItem>
+      }
+
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
@@ -172,20 +197,11 @@ export default function AppMenu() {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
 
-      { isLoggedUser ?
-        <MenuItem onClick={() => console.log("login")}>
+      { !isLoggedUser ?
+        <MenuItem onClick={() => {
+          navigate.push("LoginPage")
+        }}>
           <IconButton
             aria-label="login application"
             aria-controls="primary-search-account-menu"
@@ -197,7 +213,9 @@ export default function AppMenu() {
           <p>Login</p>
         </MenuItem>
       :
-        <MenuItem onClick={() => console.log("logout")}>
+        <MenuItem onClick={() => {
+          fireAuth.signOut();
+        }}>
           <IconButton
             aria-label="login application"
             aria-controls="primary-search-account-menu"
@@ -209,7 +227,6 @@ export default function AppMenu() {
           <p>Logout</p>
         </MenuItem>
       }
-
     </Menu>
   );
 
@@ -253,16 +270,26 @@ export default function AppMenu() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            { isLoggedUser && 
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                { currentAvatar  &&
+              <>
+                <Avatar 
+                    alt="Current User"
+                    src={currentAvatar}
+                    className={classes.small}
+                />
+              </>
+            }
+              </IconButton>
+            }
             { isLoggedUser ?
                 <Button
                     variant="contained"
@@ -305,7 +332,6 @@ export default function AppMenu() {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 }
