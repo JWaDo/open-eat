@@ -36,6 +36,7 @@ function HomePage() {
 
     return (
         <div>
+            <AppMenu isLoggedUser/>
             <Listings />
             <form onSubmit={(e) => uploadImage(e, file)}>
                 <input 
@@ -48,8 +49,6 @@ function HomePage() {
                     
                 }}>Upload</Button>
             </form>
-            
-            <AppMenu isLoggedUser/>
             <img src={image} alt=""/>
         </div>
     );
