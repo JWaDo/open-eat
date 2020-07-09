@@ -2,13 +2,34 @@ import React, { useState } from 'react';
 import { fireAuth } from '../../firebase/config';
 import { navigate } from '../../routes';
 import { useSnackbar } from 'notistack';
-import { Link, Box, Paper, TextField, Grid, Button } from '@material-ui/core';
+import { Link, Box, Paper, TextField, Grid, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     box: {
         height: "100vh",
         width: "100vw",
+    },
+    form: {
+        width: "100%",
+        textAlign: "center",
+    },
+    inputs: {
+        margin: theme.spacing(3),
+        width: '50%',
+    },
+    button: {
+        margin: theme.spacing(3),
+        width: '50%',
+    },
+    notRegister: {
+        textAlign: 'center',
+        padding: '1rem',
+    },
+    title: {
+        textAlign: "center",
+        textTransform: "uppercase",
+        padding: theme.spacing(3),
     }
 }))
 
@@ -28,15 +49,13 @@ function LoginForm() {
         e.preventDefault();
         console.log(user.password);
         fireAuth.signInWithEmailAndPassword(user.email, user.password)
-            .then(user => {
-                console.log("connected");
-                console.log(user);
+            .then(_user => {
                 enqueueSnackbar("Welcome", { variant: "success" });
             })
-            .catch(function(error) {
+            .catch((error) => {
                 const errorMessage = error.message;
                 enqueueSnackbar(errorMessage, { variant: "error" });
-        })
+            })
     }
 
     return (
@@ -56,12 +75,23 @@ function LoginForm() {
                     spacing={1}
                     
                 >
-                    <form>
+                   <Grid item xs={12}>
+                        <Typography
+                            variant="h3"
+                            component="h1"
+                            color="primary"
+                            className={classes.title}
+                        >
+                            Log in your account
+                        </Typography>
+                    </Grid> 
+                    <form className={classes.form}>   
                         <Grid item xs={12}>
                             <TextField 
                                 name="email"
                                 label="Email" 
                                 onChange={handleChange}
+                                className={classes.inputs}
                             />
                         </Grid>   
                         <Grid item xs={12}>
@@ -70,6 +100,7 @@ function LoginForm() {
                                 label="Password" 
                                 type="password"
                                 onChange={handleChange}
+                                className={classes.inputs}
                             />
                         </Grid>   
                         <Grid item xs={12}>
@@ -77,6 +108,7 @@ function LoginForm() {
                                 variant="contained"
                                 color="primary"
                                 onClick={handleSubmit}
+                                className={classes.button}
                             >
                                 Login
                             </Button>
@@ -87,6 +119,7 @@ function LoginForm() {
                         <Link
                             component="button"
                             variant="body"
+                            className={classes.notRegister}
                             onClick={(e) => {
                                 e.preventDefault();
                                 navigate.push("RegisterPage");
@@ -95,8 +128,8 @@ function LoginForm() {
                             Not registered yet ? Come here
                         </Link>
                     </Grid>
-                </Grid>
 
+                </Grid>
             </Paper>
         </Box>
     )
