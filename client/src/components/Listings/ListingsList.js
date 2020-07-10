@@ -56,10 +56,18 @@ function ListingsList() {
 const Listing = ({ listing }) => {
 
     const classes = useListinCardStyles();
+    const [mark, setMark] = useState(null);
+    
+    useEffect(() => {
+        Listings.getMark(listing.id)
+            .then(_mark => setMark(_mark));
+    }, [mark]);
+    
+    
+    
     
     return (
         <React.Fragment>
-            {console.log('img', listing.img)}
             <Grid className={classes.card} item xs={12} sm={3}>
                 <Card>
                     <CardActionArea>
@@ -82,7 +90,9 @@ const Listing = ({ listing }) => {
                                 name="customized-empty"
                                 defaultValue={listing.avgRating}
                                 precision={0.1}
+                                value={mark}
                                 emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                                readOnly
                             />
                         </Box>
                     <CardActions>

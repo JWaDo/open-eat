@@ -21,9 +21,21 @@ Listings.getListings = function(onChange) {
 };
  
  
-Listings.getListing = function(id) {
-    
-};
+Listings.getListing = function(id) {};
+
+Listings.getMark = function(listingId) {
+  let avg = null;
+
+  return listings.doc(listingId).collection("reviews").get()
+    .then(snapshot => {
+      snapshot.docs.forEach(doc => {
+          const review = doc.data();
+          if(review.rating > 0) avg += review.rating
+      })
+
+    return avg / snapshot.docs.length;
+  })
+}
  
 Listings.addReview = function(listingId, review) {
   /*
