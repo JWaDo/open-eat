@@ -23,6 +23,31 @@ Listings.getListings = function(onChange) {
  
 Listings.getListing = function(id) {};
 
+Listings.addFavorite = function(idListing, idUser, isFavorite) {
+  return listings.doc(idListing).collection("favorites").get()
+    .then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        console.log((doc.data().fav === idUser));
+        doc.ref.update({
+          'fav': (doc.data().fav === idUser) ? "" : idUser,
+        })
+      })
+      return !isFavorite;
+    })
+};
+
+Listings.isFavorite = function(idListing, idUser) {
+  return listings.doc(idListing).collection("favorites").get()
+    .then(snapshot => {
+      let isFav = false;
+      snapshot.docs.forEach(doc => {
+        const currentFav = String(doc.data().fav);
+        if(currentFav === idUser) isFav = true;
+      })
+      return isFav;
+    })
+}
+
 Listings.getMark = function(listingId) {
   let avg = null;
 
@@ -36,6 +61,8 @@ Listings.getMark = function(listingId) {
     return avg / snapshot.docs.length;
   })
 }
+
+
  
 Listings.addReview = function(listingId, review) {
   /*

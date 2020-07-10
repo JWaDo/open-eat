@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Listings from './Listings.data';
 import { Grid, Container, makeStyles, Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Button, Box, CircularProgress, IconButton } from '@material-ui/core';
-import { FavoriteBorder as FavoriteBorderIcon, StarBorder as StarBorderIcon } from '@material-ui/icons';
+import { FavoriteBorder as FavoriteBorderIcon, Favorite, StarBorder as StarBorderIcon } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
+import { useSnackbar } from 'notistack';
 
 const useListinCardStyles = makeStyles(theme => ({
 
@@ -17,7 +18,7 @@ const useListinCardStyles = makeStyles(theme => ({
     
 }));
 
-function ListingsList() {
+function ListingsList({currentUser}) {
 
     const [listings, setListings] = useState([]);
     const [fetching, isFetching] = useState(true);
@@ -46,25 +47,35 @@ function ListingsList() {
         <div>
             <Container maxWidth='xl'>
                 <Grid container spacing={2}>
-                    { listings.map((listing, key) => <Listing key={key} listing={listing} />) }
+                    { listings.map((listing, key) => 
+                        <Listing 
+                            key={key}
+                            listing={listing}
+                            currentUser={currentUser}
+                        />) 
+                    }
                 </Grid>
             </Container>
         </div>
     );
 }
 
-const Listing = ({ listing }) => {
+const Listing = ({ listing, currentUser }) => {
 
     const classes = useListinCardStyles();
     const [mark, setMark] = useState(null);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const userId = currentUser.uid;
+    const { enqueueSnackbar } = useSnackbar();
     
     useEffect(() => {
         Listings.getMark(listing.id)
             .then(_mark => setMark(_mark));
+        Listings.isFavorite(listing.id, userId)
+            .then(_fav => {
+                setIsFavorite(_fav);
+            });
     }, [mark]);
-    
-    
-    
     
     return (
         <React.Fragment>
@@ -96,8 +107,20 @@ const Listing = ({ listing }) => {
                             />
                         </Box>
                     <CardActions>
-                        <IconButton size='small' color='primary'>
-                            <FavoriteBorderIcon />
+                        <IconButton
+                            size='small' 
+                            color='primary'
+                            //
+                            onClick={() => {
+                                setIsFavorite(!isFavorite);
+                                Listings.addFavorite(listing.id, userId, isFavorite)
+                                    .then(data => {
+                                        const actions = isFavorite ? "removed from" : "added in";
+                                        enqueueSnackbar(`${listing.title} ${actions} favorites`);
+                                    })
+                            }}
+                        >
+                            { isFavorite ? <Favorite /> : <FavoriteBorderIcon /> }
                         </IconButton>
                         <Button size="small" color="primary">
                             Order now
