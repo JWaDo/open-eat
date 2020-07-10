@@ -14,6 +14,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -95,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function AppMenu() {
+export default function AppMenu({isFavFiltering, setIsFavFiltering}) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -260,9 +261,15 @@ export default function AppMenu() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton 
+              aria-label="show 4 new mails"
+              color="inherit"
+              onClick={() => {
+                setIsFavFiltering(!isFavFiltering)
+              }}
+            >
               <Badge badgeContent={4} color="secondary">
-                <MailIcon />
+                <FavoriteIcon />
               </Badge>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">

@@ -14,6 +14,7 @@ import coci from '../assets/coci.jpg';
 function HomePage() { 
 
     const [user, setUser] = useState(null);
+    const [isFavFiltering, setIsFavFiltering] = useState(false);
 
     useEffect(() => {
         fireAuth.onAuthStateChanged(function(_user) {
@@ -27,8 +28,15 @@ function HomePage() {
 
     return (
         <div>
-            <AppMenu isLoggedUser/>
-            <ListingsList currentUser={user} />
+            <AppMenu 
+                isLoggedUser
+                isFavFiltering={isFavFiltering}
+                setIsFavFiltering={setIsFavFiltering}
+            />
+            <ListingsList 
+                isFavFiltering={isFavFiltering}
+                currentUser={user}
+            />
         </div>
     );
 }

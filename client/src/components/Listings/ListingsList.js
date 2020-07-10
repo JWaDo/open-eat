@@ -18,7 +18,7 @@ const useListinCardStyles = makeStyles(theme => ({
     
 }));
 
-function ListingsList({currentUser}) {
+function ListingsList({currentUser, isFavFiltering}) {
 
     const [listings, setListings] = useState([]);
     const [fetching, isFetching] = useState(true);
@@ -41,6 +41,7 @@ function ListingsList({currentUser}) {
         Listings.getListings(onChange);
     }, []);
 
+
     if (fetching) return (<Box p={3} display='flex' justifyContent='center' alignItems='center'><CircularProgress color='primary' /></Box>)
 
     return (
@@ -52,6 +53,7 @@ function ListingsList({currentUser}) {
                             key={key}
                             listing={listing}
                             currentUser={currentUser}
+                            isFavFiltering={isFavFiltering}
                         />) 
                     }
                 </Grid>
@@ -60,13 +62,15 @@ function ListingsList({currentUser}) {
     );
 }
 
-const Listing = ({ listing, currentUser }) => {
+const Listing = ({ listing, currentUser, isFavFiltering }) => {
 
     const classes = useListinCardStyles();
     const [mark, setMark] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
     const userId = currentUser.uid;
     const { enqueueSnackbar } = useSnackbar();
+
+    console.log(isFavFiltering)
     
     useEffect(() => {
         Listings.getMark(listing.id)
@@ -76,6 +80,10 @@ const Listing = ({ listing, currentUser }) => {
                 setIsFavorite(_fav);
             });
     }, [mark]);
+
+    if(isFavFiltering && !isFavorite) {
+        return null;   
+    }
     
     return (
         <React.Fragment>

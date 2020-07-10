@@ -48,6 +48,12 @@ Listings.isFavorite = function(idListing, idUser) {
     })
 }
 
+Listings.getFavorite = function(idListing, idUser) {
+  const favorites = [];
+  return listings.doc(idListing).collection("favorites").get()
+    .then(snapshot => snapshot.docs.forEach(doc => favorites.push(doc.data())));
+}
+
 Listings.getMark = function(listingId) {
   let avg = null;
 
