@@ -41,7 +41,6 @@ function ListingsList({currentUser, isFavFiltering}) {
         Listings.getListings(onChange);
     }, []);
 
-
     if (fetching) return (<Box p={3} display='flex' justifyContent='center' alignItems='center'><CircularProgress color='primary' /></Box>)
 
     return (

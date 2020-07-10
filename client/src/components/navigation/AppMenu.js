@@ -12,7 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import MailIcon from '@material-ui/icons/Mail';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -183,12 +183,16 @@ export default function AppMenu({isFavFiltering, setIsFavFiltering}) {
       }
 
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
+        <IconButton 
+          aria-label="show 4 new mails"
+          color="inherit"
+          onClick={() => {
+            setIsFavFiltering(!isFavFiltering)
+          }}
+        >
+          { isFavFiltering ? <FavoriteIcon /> : <FavoriteBorder /> }
         </IconButton>
-        <p>Messages</p>
+        <p>Favorites</p>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
@@ -268,9 +272,7 @@ export default function AppMenu({isFavFiltering, setIsFavFiltering}) {
                 setIsFavFiltering(!isFavFiltering)
               }}
             >
-              <Badge badgeContent={4} color="secondary">
-                <FavoriteIcon />
-              </Badge>
+              { isFavFiltering ? <FavoriteIcon /> : <FavoriteBorder /> }
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">
