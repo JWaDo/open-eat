@@ -27,7 +27,7 @@ function ListingsList() {
         isFetching(true);
         changes.forEach(change => {
             if (change.type === 'added') {
-                _listings.push(change.doc.data());
+                _listings.push({...change.doc.data(), id: change.doc.ref.id });
             } else {
                 _listings = _listings.filter((l, index) =>  index !== change.oldIndex);
             }
@@ -56,7 +56,7 @@ function ListingsList() {
 const Listing = ({ listing }) => {
 
     const classes = useListinCardStyles();
-
+    
     return (
         <React.Fragment>
             {console.log('img', listing.img)}

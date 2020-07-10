@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import Listings from '../components/Listings/Listings';
+import React, { useState } from 'react';
+import ListingsList from '../components/Listings/ListingsList';
 import Users from '../firebase/collections/Users';
 import { Button } from '@material-ui/core';
 import { navigate } from '../routes';
@@ -37,7 +37,7 @@ function HomePage() {
     return (
         <div>
             <AppMenu isLoggedUser/>
-            <Listings />
+            <ListingsList />
             <form onSubmit={(e) => uploadImage(e, file)}>
                 <input 
                     type="file"
