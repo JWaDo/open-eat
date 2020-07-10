@@ -47,6 +47,7 @@ function RegisterForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         fireAuth.createUserWithEmailAndPassword(user.email, user.password)
             .then(_user => {
 
@@ -65,13 +66,7 @@ function RegisterForm() {
             })
             .catch(function(error) {
                 enqueueSnackbar(error.message, { variant: "success" });
-            });    
-
-        // fireAuth.currentUser.updateProfile({
-        //     displayName: user.displayName
-        // }).then(_user => {
-        //     navigate.push("PrivatePage");    
-        // })
+            });   
     }
 
     return (

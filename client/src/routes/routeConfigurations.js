@@ -6,6 +6,7 @@ import HomePage from '../pages/HomePage';
 import PrivatePage from '../pages/PrivatePage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
+import ProfilePage from '../pages/ProfilePage';
 
 // Routes
 export default [
@@ -18,6 +19,13 @@ export default [
         exact: true,
         private: false,
         component: HomePage,
+    },
+    {
+        name: 'ProfilePage',
+        path: '/profile',
+        exact: true,
+        private: true,
+        component: ProfilePage,
     },
      /**
      * Not found page
