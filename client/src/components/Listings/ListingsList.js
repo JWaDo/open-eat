@@ -18,10 +18,12 @@ const useListinCardStyles = makeStyles(theme => ({
     
 }));
 
-function ListingsList({currentUser, isFavFiltering}) {
+function ListingsList({currentUser, isFavFiltering, searchWord}) {
 
     const [listings, setListings] = useState([]);
+    const [fullListings, setFullListings] = useState([]);
     const [fetching, isFetching] = useState(true);
+    const { enqueueSnackbar } = useSnackbar();
 
     const onChange = changes => {
         let _listings = listings;
@@ -35,11 +37,21 @@ function ListingsList({currentUser, isFavFiltering}) {
             isFetching(false);
         });
         setListings([..._listings]);
+        setFullListings([..._listings]);
     }
+
+    const filterListing = (searchWord) => listings.filter(l => l.title.match(searchWord));
     
     useEffect(() => {
         Listings.getListings(onChange);
     }, []);
+
+    useEffect(() => {
+        searchWord ?
+            setListings(filterListing(searchWord))
+        :
+            setListings(fullListings)
+    }, [searchWord]);
 
     if (fetching) return (<Box p={3} display='flex' justifyContent='center' alignItems='center'><CircularProgress color='primary' /></Box>)
 
@@ -68,8 +80,6 @@ const Listing = ({ listing, currentUser, isFavFiltering }) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const userId = currentUser.uid;
     const { enqueueSnackbar } = useSnackbar();
-
-    console.log(isFavFiltering)
     
     useEffect(() => {
         Listings.getMark(listing.id)
@@ -117,7 +127,6 @@ const Listing = ({ listing, currentUser, isFavFiltering }) => {
                         <IconButton
                             size='small' 
                             color='primary'
-                            //
                             onClick={() => {
                                 setIsFavorite(!isFavorite);
                                 Listings.addFavorite(listing.id, userId, isFavorite)

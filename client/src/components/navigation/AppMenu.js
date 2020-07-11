@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function AppMenu({isFavFiltering, setIsFavFiltering}) {
+export default function AppMenu({isFavFiltering, setIsFavFiltering, setSearchWord}) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -255,11 +255,12 @@ export default function AppMenu({isFavFiltering, setIsFavFiltering}) {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search by title"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              onChange={(e) => setSearchWord(e.target.value)}
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>

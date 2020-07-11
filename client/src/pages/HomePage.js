@@ -15,6 +15,8 @@ function HomePage() {
 
     const [user, setUser] = useState(null);
     const [isFavFiltering, setIsFavFiltering] = useState(false);
+    const [searchWord, setSearchWord] = useState("");
+
 
     useEffect(() => {
         fireAuth.onAuthStateChanged(function(_user) {
@@ -32,10 +34,12 @@ function HomePage() {
                 isLoggedUser
                 isFavFiltering={isFavFiltering}
                 setIsFavFiltering={setIsFavFiltering}
+                setSearchWord={setSearchWord}
             />
             <ListingsList 
                 isFavFiltering={isFavFiltering}
                 currentUser={user}
+                searchWord={searchWord}
             />
         </div>
     );
