@@ -194,14 +194,6 @@ export default function AppMenu({isFavFiltering, setIsFavFiltering, setSearchWor
         </IconButton>
         <p>Favorites</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
 
       { !isLoggedUser ?
         <MenuItem onClick={() => {
@@ -274,11 +266,6 @@ export default function AppMenu({isFavFiltering, setIsFavFiltering, setSearchWor
               }}
             >
               { isFavFiltering ? <FavoriteIcon /> : <FavoriteBorder /> }
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
             </IconButton>
             { isLoggedUser && 
               <IconButton
