@@ -13,7 +13,7 @@ import coci from '../assets/coci.jpg';
 
 function HomePage() { 
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(false);
     const [isFavFiltering, setIsFavFiltering] = useState(false);
     const [searchWord, setSearchWord] = useState("");
 
@@ -26,6 +26,8 @@ function HomePage() {
                 setUser(null);
             }
           });
+          if(!user) return ;
+          if(user === false) navigate.push("LoginPage");
     }, []);
 
     return (

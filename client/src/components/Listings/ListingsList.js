@@ -82,7 +82,7 @@ const Listing = ({ listing, currentUser, isFavFiltering }) => {
     const classes = useListinCardStyles();
     const [mark, setMark] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
-    const userId = currentUser.uid;
+    const userId = currentUser && currentUser.uid;
     const { enqueueSnackbar } = useSnackbar();
     
     useEffect(() => {

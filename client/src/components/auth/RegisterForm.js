@@ -35,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 
 function RegisterForm() {
     const [user, setUser] = useState({});
+    const [disabled, setDisabled] = useState(true);
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
     
@@ -43,6 +44,11 @@ function RegisterForm() {
             ...user,
             [e.target.name]: e.target.value,
         })
+        isValidForm();
+    }
+
+    const isValidForm = () => {
+        setDisabled(Object.keys(user).length !== 3);
     }
 
     const handleSubmit = (e) => {
@@ -126,6 +132,7 @@ function RegisterForm() {
                             <Button
                                 variant="contained"
                                 color="primary"
+                                disabled={disabled}
                                 onClick={handleSubmit}
                                 className={classes.button}
                             >

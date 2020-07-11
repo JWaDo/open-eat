@@ -15,7 +15,7 @@ export default [
         name: 'HomePage',
         path: '/',
         exact: true,
-        private: false,
+        private: true,
         component: HomePage,
     },
     {

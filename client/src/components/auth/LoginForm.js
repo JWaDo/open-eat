@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fireAuth } from '../../firebase/config';
 import { navigate } from '../../routes';
 import { useSnackbar } from 'notistack';
@@ -37,6 +37,14 @@ function LoginForm() {
     const [user, setUser] = useState({});
     const { enqueueSnackbar } = useSnackbar();
     const classes = useStyles();
+
+    useEffect(() => {
+        fireAuth.onAuthStateChanged(function(_user) {
+            if (_user) {
+                navigate.push("HomePage")
+            }
+          });
+    }, []);
     
     const handleChange = (e) => {
         setUser({
@@ -47,7 +55,6 @@ function LoginForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(user.password);
         fireAuth.signInWithEmailAndPassword(user.email, user.password)
             .then(_user => {
                 enqueueSnackbar("Welcome", { variant: "success" });

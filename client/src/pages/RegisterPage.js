@@ -6,8 +6,12 @@ import { navigate } from '../routes';
 function RegisterPage() {
 
     useEffect(() => {
-        if(fireAuth.currentUser) navigate.replace("HomePage");
-    }, [])
+        fireAuth.onAuthStateChanged(function(_user) {
+            if (_user) {
+                navigate.push("HomePage")
+            }
+          });
+    }, []);
 
     return (
         <div>

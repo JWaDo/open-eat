@@ -212,6 +212,7 @@ export default function AppMenu({isFavFiltering, setIsFavFiltering, setSearchWor
       :
         <MenuItem onClick={() => {
           fireAuth.signOut();
+          navigate.push("LoginPage");
         }}>
           <IconButton
             aria-label="login application"
@@ -296,6 +297,7 @@ export default function AppMenu({isFavFiltering, setIsFavFiltering, setSearchWor
                     onClick={() => {
                         fireAuth.signOut().then(function() {
                             enqueueSnackbar("Successfully logged out", { variant: "success" });
+                            navigate.push("LoginPage");
                         }).catch(function(error) {
                             enqueueSnackbar("Something wrong happened", { variant: "error" });
                         })
