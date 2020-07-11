@@ -1,4 +1,5 @@
 import listings from '../../firebase/collections/listings';
+import { firestore } from '../../firebase/config';
 
 class Listings {};
 
@@ -19,9 +20,6 @@ Listings.getListings = function(onChange) {
       });
 
 };
- 
- 
-Listings.getListing = function(id) {};
 
 Listings.addFavorite = function(idListing, idUser, isFavorite) {
   return listings.doc(idListing).collection("favorites").get()
@@ -34,6 +32,15 @@ Listings.addFavorite = function(idListing, idUser, isFavorite) {
       })
       return !isFavorite;
     })
+}
+
+Listings.getReviews = function(id, onChange) {
+    const query = listings.doc(id).collection('reviews');
+
+    query.onSnapshot(function(snapshot) {
+        if (!snapshot.size) return ; 
+        onChange(snapshot.docChanges())
+    });
 };
 
 Listings.isFavorite = function(idListing, idUser) {
@@ -70,10 +77,25 @@ Listings.getMark = function(listingId) {
 
 
  
-Listings.addReview = function(listingId, review) {
-  /*
-    TODO: Retrieve add a rating to a restaurant
-  */
+Listings.addReview = function(listingId, review) {   
+  const document = listings.doc(listingId);
+  const newRatingDocument = document.collection('reviews').doc();
+
+  return firestore.runTransaction(function(transaction) {
+    return transaction.get(document).then(function(doc) {
+      const data = doc.data();
+
+      const newAverage =
+          (data.numRatings * data.avgRating + review.rating) /
+          (data.numRatings + 1);
+
+      transaction.update(document, {
+        numRatings: data.numRatings + 1,
+        avgRating: newAverage
+      });
+      return transaction.set(newRatingDocument, review);
+    });
+  });
 };
 //
 Listings.getDocumentsInQuery = function(query, renderer) {

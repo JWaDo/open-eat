@@ -4,11 +4,15 @@ import { Grid, Container, makeStyles, Card, CardActionArea, CardMedia, CardConte
 import { FavoriteBorder as FavoriteBorderIcon, Favorite, StarBorder as StarBorderIcon } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { useSnackbar } from 'notistack';
+import { navigate } from '../../routes';
 
 const useListinCardStyles = makeStyles(theme => ({
 
     card: {
         marginTop: theme.spacing(2),
+    },
+    _card: {
+        height: '100%',
     },
     media: {
         height: '200px',
@@ -97,20 +101,20 @@ const Listing = ({ listing, currentUser, isFavFiltering }) => {
     return (
         <React.Fragment>
             <Grid className={classes.card} item xs={12} sm={3}>
-                <Card>
-                    <CardActionArea>
+                <Card className={classes._card}>
+                    <CardActionArea onClick={() => navigate.push('ListingPage', { listingId: listing.id })}>
                         <CardMedia
                             className={classes.media}
                             image={listing.img}
                             title={listing.title}
                         />
                         <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {listing.title}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {listing.description}
-                        </Typography>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {listing.title}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                                {listing.description}
+                            </Typography>
                         </CardContent>
                     </CardActionArea>
                         <Box width='100%' px={2}>
@@ -143,7 +147,6 @@ const Listing = ({ listing, currentUser, isFavFiltering }) => {
                         </Button>
                     </CardActions>
                 </Card>
-                
             </Grid>
         </React.Fragment>
     );
