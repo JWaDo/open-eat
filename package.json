@@ -10,5 +10,6 @@
     "client:w": "docker-compose logs -f client"
   },
   "author": "me",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
