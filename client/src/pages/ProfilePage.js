@@ -31,6 +31,11 @@ const useStyles = makeStyles(theme => ({
         textTransform: "uppercase",
         padding: theme.spacing(3),
     },
+    displayName: {
+        textAlign: "center",
+        textTransform: "uppercase",
+        padding: theme.spacing(1),
+    },
     small: {
         width: '150px',
         height: '150px',
@@ -47,7 +52,7 @@ function ProfilePage({currentUser}) {
     const [currentAvatar, setCurrentAvatar] = useState();
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-    const { uid } = currentUser;
+    const { uid, displayName } = currentUser;
 
     // Get image
     fireStorage.ref("profilePicture")
@@ -110,6 +115,15 @@ function ProfilePage({currentUser}) {
                             className={classes.title}
                         >
                             Profile
+                        </Typography>
+
+                        <Typography
+                            variant="h6"
+                            component="h3"
+                            color="primary"
+                            className={classes.displayName}
+                        >
+                            {displayName}
                         </Typography>
                     </Grid> 
                     <form 
