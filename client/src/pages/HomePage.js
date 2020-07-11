@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ListingsList from '../components/Listings/ListingsList';
-import Users from '../firebase/collections/Users';
-import { Button } from '@material-ui/core';
 import { navigate } from '../routes';
-import { fireAuth, fireStorage } from '../firebase/config';
-import { useSnackbar } from 'notistack';
+import { fireAuth} from '../firebase/config';
 import AppMenu from '../components/navigation/AppMenu';
-import coci from '../assets/coci.jpg';
 
 
 

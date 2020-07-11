@@ -27,7 +27,6 @@ function ListingsList({currentUser, isFavFiltering, searchWord}) {
     const [listings, setListings] = useState([]);
     const [fullListings, setFullListings] = useState([]);
     const [fetching, isFetching] = useState(true);
-    const { enqueueSnackbar } = useSnackbar();
 
     const onChange = changes => {
         let _listings = listings;

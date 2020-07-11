@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { fireAuth } from '../../firebase/config';
 import { navigate } from '../../routes';
 import { useSnackbar } from 'notistack';

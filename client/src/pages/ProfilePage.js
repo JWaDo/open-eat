@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Input from '@material-ui/core/Input';
-import { Box, Paper, TextField, Grid, Button, Typography, Avatar } from '@material-ui/core';
+import { Box, Paper, Grid, Button, Typography, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
 import { fireStorage, fireAuth } from '../firebase/config';
