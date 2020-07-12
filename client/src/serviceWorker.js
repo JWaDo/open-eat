@@ -1,3 +1,22 @@
+import firebase from './firebase/config';
+
+// import firebase from './firebase/config';
+
+// firebase.initializeApp({
+//     messagingSenderId: '736073550328',
+// });
+
+// firebase.messaging().setBackgroundMessageHandler((payload) => {
+//     const title = 'Hello world!';
+//     const notificationOptions = {
+//       body: 'Ping?',
+//       icon: '/512.png'
+//     };
+  
+//     return self.registration.showNotification('Title',
+//       notificationOptions);
+// });
+
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -58,6 +77,7 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
+      
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {

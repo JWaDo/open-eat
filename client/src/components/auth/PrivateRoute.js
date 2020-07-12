@@ -3,9 +3,6 @@ import { Route } from 'react-router';
 import { fireAuth } from '../../firebase/config';
 import { navigate } from '../../routes/index';
 
-
-
-
 function PrivateRoute(props) {
 
     const [confirmedUser, setConfirmedUser] = useState(true);

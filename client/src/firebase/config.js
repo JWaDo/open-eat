@@ -17,3 +17,6 @@ firebase.analytics();
 export const firestore = firebase.firestore();
 export const fireAuth = firebase.auth();
 export const fireStorage = firebase.storage();
+export const fireMessaging = firebase.messaging().usePublicVapidKey('BNrYmtNEWt_xlE3dlu4xk5vPM5ISWkVL0F0zJw_arH8cyQ5_Z4Ygvz7_6w-BYlV2cfVjIHvuMz2yQlWjrdCc-5U');
+
+export default firebase;
