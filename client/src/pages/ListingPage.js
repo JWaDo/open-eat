@@ -76,7 +76,14 @@ function ListingPage({ match, currentUser }) {
 
     const getToken = async () => {
         const token = await firebase.messaging().getToken();
+        
+        firebase.messaging().onMessage((payload) => {
+            //
+            console.log('payload', payload);
+        });
+
         if (token) {
+            console.log('token', token);
             setTimeout(() => {
                 fetch('https://fcm.googleapis.com/fcm/send', {
                     method: 'POST',
