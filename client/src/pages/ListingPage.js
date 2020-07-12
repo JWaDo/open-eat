@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import AppMenu from '../components/navigation/AppMenu';
+import firebase from '../firebase/config';
 import listings from '../firebase/collections/listings';
-import { CircularProgress, Box, AppBar, Toolbar, IconButton, makeStyles, Container, Typography, Paper, TextField, Grid, Button, Collapse, ListItem, ListItemAvatar, ListItemText, List, Avatar } from '@material-ui/core';
-import { ArrowBack as ArrowBackIcon, StarBorder as StarBorderIcon } from '@material-ui/icons';
+import { CircularProgress, Box, AppBar, Toolbar, IconButton, makeStyles, Container, Typography, Paper, TextField, Grid, Button, Collapse, ListItem, ListItemAvatar, ListItemText, List, Avatar, Dialog } from '@material-ui/core';
+import { ArrowBack as ArrowBackIcon, StarBorder as StarBorderIcon, Notifications as NotificationsIcon } from '@material-ui/icons';
 import { navigate } from '../routes';
 import { Rating } from '@material-ui/lab';
 import Listings from '../components/Listings/Listings.data';
@@ -21,6 +21,7 @@ function ListingPage({ match, currentUser }) {
     const [listing, setListing] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState({});
+    const [modalOpen, setModalOpen] = useState(false);
     const classes = useStyles();
 
     const onReviewsChange = changes => {
@@ -66,6 +67,35 @@ function ListingPage({ match, currentUser }) {
 
     const rating = getVote() && getVote().rating;
 
+    const requestPermission = async () => {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            getToken();
+        }
+    }
+
+    const getToken = async () => {
+        const token = await firebase.messaging().getToken();
+        if (token) {
+            setTimeout(() => {
+                fetch('https://fcm.googleapis.com/fcm/send', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: 'key=AAAAq2FnCfg:APA91bGmw2NWToyblOY0ZzU5wIzGS6fKNggrrjWMRx7D-DA8D6EjifEI6nuWse98zhda8j9GYfTMtkoYj8c6LBzHziQi1-yfCkeegW7-l_B3nBFQha2Wn0b_RvN5wlfwA6hu_dQTjsn2',
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        notification: {
+                            title: 'Your order is beeing prepared!',
+                            body: 'You are about taste the better...',
+                        },
+                        to: token,
+                    }),
+                });
+            }, 10 * 1000); // 10 seconds after!
+        }
+    }
+
     if (listing === null)  return (<Box p={3} display='flex' justifyContent='center' alignItems='center'><CircularProgress color='primary' /></Box>);
 
     if (listing === undefined) {
@@ -86,13 +116,37 @@ function ListingPage({ match, currentUser }) {
                 </AppBar>
             </Box>
             <Container maxWidth='md'>
-                <Box my={2}>
-                    <Typography variant='h2' component='p'>
-                        {listing.title}
-                    </Typography>
-                    <Typography variant='subtitle1' component='p'>
-                        {listing.description}
-                    </Typography>
+                <Box my={2} display='flex' justifyContent='space-between'>
+                    <Box>
+                        <Typography variant='h2' component='p'>
+                            {listing.title}
+                        </Typography>
+                        <Typography variant='subtitle1' component='p'>
+                            {listing.description}
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Button variant='outlined' color='primary' onClick={() => setModalOpen(true)}>
+                            Order now
+                        </Button>
+                    </Box>
+                    <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
+                        <Box p={3}>
+                            <Box my={2}>
+                                <Typography>
+                                    Active the notification and get notified when your order is ready!
+                                </Typography>
+                            </Box>
+                            <Box display='flex' justifyContent='flex-end'>
+                                <Button startIcon={<NotificationsIcon />} color='primary' onClick={() => {
+                                    requestPermission();
+                                    setModalOpen(false);
+                                }}>
+                                    Active notification
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Dialog>
                 </Box>
                 <Grid container>
                     <Grid xs={12} sm={6}>

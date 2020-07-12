@@ -20,7 +20,7 @@ function Notifications() {
         if (token) {
             setMessagingToken(token);
         }
-      }
+    }
     
     useEffect(() => {
 
