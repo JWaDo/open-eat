@@ -18,7 +18,7 @@ function PrivateRoute(props) {
     }, [confirmedUser])
 
     if(!confirmedUser) {
-        navigate.push("NotFoundPage");
+        navigate.push("LoginPage");
         return null;
     }
 
