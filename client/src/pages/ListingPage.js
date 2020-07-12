@@ -102,8 +102,6 @@ function ListingPage({ match, currentUser }) {
                                     {(!!getVote()) ? "Thanks for rating":"Let us know what you think"}
                                 </Typography>
 
-                                {(!!getVote() && console.log('rating', rating))}
-
                                 <Box>
                                     <Rating
                                         precision={1}
